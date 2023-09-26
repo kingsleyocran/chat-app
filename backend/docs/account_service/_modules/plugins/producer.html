@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>plugins.producer &mdash; Chat App System (Account Service) 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Chat App System (Account Service)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Account Packages</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Chat App System (Account Service)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">plugins.producer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for plugins.producer</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Register all Producers in the system</span>
+
+<span class="sd">This module demonstrates how a list of producers</span>
+<span class="sd">send to a particular message on a topic</span>
+
+<span class="sd">Attributes:</span>
+<span class="sd">    app_settings (object): Application Settings</span>
+<span class="sd">    consumer_logger (object): Logger instance</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">aiokafka</span> <span class="kn">import</span> <span class="n">AIOKafkaProducer</span>
+
+<span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="n">setting</span>
+<span class="kn">from</span> <span class="nn">interfaces</span> <span class="kn">import</span> <span class="n">producer</span>
+<span class="kn">from</span> <span class="nn">tools</span> <span class="kn">import</span> <span class="n">log</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">setting</span><span class="o">.</span><span class="n">AppSettings</span><span class="p">()</span>
+
+
+<span class="n">producer_logger</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">Log</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Producer"><a class="viewcode-back" href="../../plugins.html#plugins.producer.Producer">[docs]</a><span class="k">class</span> <span class="nc">Producer</span><span class="p">(</span><span class="n">producer</span><span class="o">.</span><span class="n">ProducerInterface</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Consumer for New Users in the System</span>
+
+<span class="sd">    This class describes the operations performed</span>
+<span class="sd">    for users that just joined the system</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_send_workload_to_kafka</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Send an action based on topics with a message&quot;&quot;&quot;</span>
+        <span class="n">producer</span> <span class="o">=</span> <span class="n">AIOKafkaProducer</span><span class="p">(</span>
+            <span class="n">bootstrap_servers</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">BROKER_URL</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">await</span> <span class="n">producer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">producer</span><span class="o">.</span><span class="n">send_and_wait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_action</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">producer_logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">producer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Producer.send_message"><a class="viewcode-back" href="../../plugins.html#plugins.producer.Producer.send_message">[docs]</a>    <span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start the producer process</span>
+<span class="sd">        Attributes:</span>
+<span class="sd">            _action (str): An action to perform or topic</span>
+<span class="sd">            _message (str): The message to send with the action</span>
+
+<span class="sd">         Args:</span>
+<span class="sd">            action (str): An action to perform or topic</span>
+<span class="sd">            message (str): The message to send with the action</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_action</span> <span class="o">=</span> <span class="n">action</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_send_workload_to_kafka</span><span class="p">())</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Cyril Pierro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

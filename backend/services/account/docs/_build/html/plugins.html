@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plugins &mdash; Chat App System (Account Service) 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Schemas" href="schemas.html" />
+    <link rel="prev" title="Models" href="models.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Chat App System (Account Service)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Account Packages</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html">Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interfaces.html">Interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Plugins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-plugins.producer">Producer Plugin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#plugins.producer.app_settings"><code class="docutils literal notranslate"><span class="pre">app_settings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#plugins.producer.consumer_logger"><code class="docutils literal notranslate"><span class="pre">consumer_logger</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#plugins.producer.Producer"><code class="docutils literal notranslate"><span class="pre">Producer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-plugins.redis">Redis Plugin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#plugins.redis.settings"><code class="docutils literal notranslate"><span class="pre">settings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#plugins.redis.DenyListStorage"><code class="docutils literal notranslate"><span class="pre">DenyListStorage</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-plugins">Contents End</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="schemas.html">Schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.html">Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handlers.html">Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="error.html">Errors</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Chat App System (Account Service)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Account Packages</a></li>
+      <li class="breadcrumb-item active">Plugins</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/plugins.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="plugins">
+<h1>Plugins<a class="headerlink" href="#plugins" title="Permalink to this heading"></a></h1>
+<section id="module-plugins.producer">
+<span id="producer-plugin"></span><h2>Producer Plugin<a class="headerlink" href="#module-plugins.producer" title="Permalink to this heading"></a></h2>
+<p>Register all Producers in the system</p>
+<p>This module demonstrates how a list of producers
+send to a particular message on a topic</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="plugins.producer.app_settings">
+<span class="sig-prename descclassname"><span class="pre">plugins.producer.</span></span><span class="sig-name descname"><span class="pre">app_settings</span></span><a class="headerlink" href="#plugins.producer.app_settings" title="Permalink to this definition"></a></dt>
+<dd><p>Application Settings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="plugins.producer.consumer_logger">
+<span class="sig-prename descclassname"><span class="pre">plugins.producer.</span></span><span class="sig-name descname"><span class="pre">consumer_logger</span></span><a class="headerlink" href="#plugins.producer.consumer_logger" title="Permalink to this definition"></a></dt>
+<dd><p>Logger instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="plugins.producer.Producer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">plugins.producer.</span></span><span class="sig-name descname"><span class="pre">Producer</span></span><a class="reference internal" href="_modules/plugins/producer.html#Producer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plugins.producer.Producer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ProducerInterface</span></code></p>
+<p>Consumer for New Users in the System</p>
+<p>This class describes the operations performed
+for users that just joined the system</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="plugins.producer.Producer.send_message">
+<span class="sig-name descname"><span class="pre">send_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/plugins/producer.html#Producer.send_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plugins.producer.Producer.send_message" title="Permalink to this definition"></a></dt>
+<dd><p>Start the producer process
+.. attribute:: _action</p>
+<blockquote>
+<div><p>An action to perform or topic</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="plugins.producer.Producer._message">
+<span class="sig-name descname"><span class="pre">_message</span></span><a class="headerlink" href="#plugins.producer.Producer._message" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The message to send with the action</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Args:</dt><dd><p>action (str): An action to perform or topic
+message (str): The message to send with the action</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-plugins.redis">
+<span id="redis-plugin"></span><h2>Redis Plugin<a class="headerlink" href="#module-plugins.redis" title="Permalink to this heading"></a></h2>
+<p>Redis Plugin</p>
+<p>This module handles all operations
+for redis</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="plugins.redis.settings">
+<span class="sig-prename descclassname"><span class="pre">plugins.redis.</span></span><span class="sig-name descname"><span class="pre">settings</span></span><a class="headerlink" href="#plugins.redis.settings" title="Permalink to this definition"></a></dt>
+<dd><p>Application settings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="plugins.redis.DenyListStorage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">plugins.redis.</span></span><span class="sig-name descname"><span class="pre">DenyListStorage</span></span><a class="reference internal" href="_modules/plugins/redis.html#DenyListStorage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plugins.redis.DenyListStorage" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Deny List Memory Storage</p>
+<p>This class is responsible for
+storing revoked tokens</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="plugins.redis.DenyListStorage._redis_server">
+<span class="sig-name descname"><span class="pre">_redis_server</span></span><a class="headerlink" href="#plugins.redis.DenyListStorage._redis_server" title="Permalink to this definition"></a></dt>
+<dd><p>Redis configured object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="plugins.redis.DenyListStorage.get_value">
+<span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/plugins/redis.html#DenyListStorage.get_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plugins.redis.DenyListStorage.get_value" title="Permalink to this definition"></a></dt>
+<dd><p>Get value</p>
+<p>This method returns the value from
+the deny list storage database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – item key value</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>result from the deny storage</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="plugins.redis.DenyListStorage.set_value">
+<span class="sig-name descname"><span class="pre">set_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/plugins/redis.html#DenyListStorage.set_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plugins.redis.DenyListStorage.set_value" title="Permalink to this definition"></a></dt>
+<dd><p>Set value</p>
+<p>This method sets a key and value pair to
+the deny list storage database</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-plugins">
+<span id="contents-end"></span><h2>Contents End<a class="headerlink" href="#module-plugins" title="Permalink to this heading"></a></h2>
+<p>Plugins Package</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="models.html" class="btn btn-neutral float-left" title="Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="schemas.html" class="btn btn-neutral float-right" title="Schemas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Cyril Pierro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

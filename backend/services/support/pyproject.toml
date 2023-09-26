@@ -1,0 +1,62 @@
+[tool.poetry]
+name = "support"
+version = "0.1.0"
+description = ""
+authors = ["Kingsley Ocran <ocrankingsley@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "*", from="." },
+]
+
+
+[tool.poetry.scripts]
+support = "scripts.runner:cli"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.10"
+fastapi = "^0.87.0"
+uvicorn = "^0.19.0"
+torch = "^1.12.1"
+transformers = "^4.24.0"
+starlette-exporter = "^0.15.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+isort = "^5.10.1"
+mypy = "^0.982"
+flake8 = "^5.0.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "."
+]
+addopts = "--cov --cov-report html --cov-report term-missing --cov-fail-under 95"
+
+[tool.mypy]
+# unfortunately cannot inject dependencies into super-linter
+# so we have to ignore the imports as they will not have typehints
+ignore_missing_imports = true
+
+warn_unused_configs = true
+disallow_any_generics = true
+# disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+# disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+no_implicit_reexport = true
+strict_equality = true
+ignore_errors = true
+
+[tool.black]
+preview= true

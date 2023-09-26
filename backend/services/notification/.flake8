@@ -1,0 +1,13 @@
+[flake8]
+exclude =
+    migrations
+    __pycache__
+    manage.py
+    settings.py
+    env
+    scripts
+    .env
+    alembic
+    tests
+    tools
+    docs

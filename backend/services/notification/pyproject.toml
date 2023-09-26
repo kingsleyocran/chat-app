@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "notification"
+version = "0.1.0"
+description = "Send messages to end users"
+authors = ["Kingsley Ocran <ocrankingsley@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "*", from="." },
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+python-dotenv = "^1.0.0"
+aiokafka = "^0.8.0"
+celery = {extras = ["redis"], version = "^5.2.7"}
+prometheus-client = "^0.16.0"
+mysqlclient = "^2.1.1"
+flower = "^1.2.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+isort = "^5.12.0"
+flake8 = "^6.0.0"
+mypy = "^1.2.0"
+pytest-cov = "^4.0.0"
+pytest = "^7.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+notification = "scripts.runner:cli"
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "."
+]
+addopts = "--cov --cov-report html --cov-report term-missing --cov-fail-under 95"
+
+[tool.mypy]
+# unfortunately cannot inject dependencies into super-linter
+# so we have to ignore the imports as they will not have typehints
+ignore_missing_imports = true
+
+warn_unused_configs = true
+disallow_any_generics = true
+# disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+# disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+no_implicit_reexport = true
+strict_equality = true
+ignore_errors = true
+
+
+[tool.black]
+experimental-string-processing = true

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dotenv.main &mdash; Chat Application (Notification Version) 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Chat Application (Notification Version)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Notification Service</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Chat Application (Notification Version)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dotenv.main</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dotenv.main</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span><span class="n">IO</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span>
+                    <span class="n">Union</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.parser</span> <span class="kn">import</span> <span class="n">Binding</span><span class="p">,</span> <span class="n">parse_stream</span>
+<span class="kn">from</span> <span class="nn">.variables</span> <span class="kn">import</span> <span class="n">parse_variables</span>
+
+<span class="c1"># A type alias for a string path to be used for the paths in this file.</span>
+<span class="c1"># These paths may flow to `open()` and `shutil.move()`; `shutil.move()`</span>
+<span class="c1"># only accepts string paths, not byte paths or file descriptors. See</span>
+<span class="c1"># https://github.com/python/typeshed/pull/6832.</span>
+<span class="n">StrPath</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;os.PathLike[str]&#39;</span><span class="p">]</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">with_warn_for_invalid_lines</span><span class="p">(</span><span class="n">mappings</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Binding</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Binding</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">mapping</span> <span class="ow">in</span> <span class="n">mappings</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mapping</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Python-dotenv could not parse statement starting at line </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">mapping</span><span class="o">.</span><span class="n">original</span><span class="o">.</span><span class="n">line</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">yield</span> <span class="n">mapping</span>
+
+
+<span class="k">class</span> <span class="nc">DotEnv</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dotenv_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StrPath</span><span class="p">],</span>
+        <span class="n">stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">encoding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">interpolate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">override</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dotenv_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StrPath</span><span class="p">]</span> <span class="o">=</span> <span class="n">dotenv_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">stream</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">encoding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interpolate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">interpolate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">override</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">override</span>
+
+    <span class="nd">@contextmanager</span>
+    <span class="k">def</span> <span class="nf">_get_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dotenv_path</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dotenv_path</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dotenv_path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">stream</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="s2">&quot;Python-dotenv could not find configuration file </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">dotenv_path</span> <span class="ow">or</span> <span class="s1">&#39;.env&#39;</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">yield</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dotenv as dict&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span>
+
+        <span class="n">raw_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolate</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">resolve_variables</span><span class="p">(</span><span class="n">raw_values</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">override</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">raw_values</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_stream</span><span class="p">()</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">mapping</span> <span class="ow">in</span> <span class="n">with_warn_for_invalid_lines</span><span class="p">(</span><span class="n">parse_stream</span><span class="p">(</span><span class="n">stream</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">mapping</span><span class="o">.</span><span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">mapping</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">mapping</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">set_as_environment_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the current dotenv as system environment variable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">override</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Key </span><span class="si">%s</span><span class="s2"> not found in </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dotenv_path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">get_key</span><span class="p">(</span>
+    <span class="n">dotenv_path</span><span class="p">:</span> <span class="n">StrPath</span><span class="p">,</span>
+    <span class="n">key_to_get</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the value of a given key from the given .env.</span>
+
+<span class="sd">    Returns `None` if the key isn&#39;t found or doesn&#39;t have a value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">DotEnv</span><span class="p">(</span><span class="n">dotenv_path</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key_to_get</span><span class="p">)</span>
+
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">rewrite</span><span class="p">(</span>
+    <span class="n">path</span><span class="p">:</span> <span class="n">StrPath</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+            <span class="n">source</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">dest</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">dest</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">raise</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">dest</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">set_key</span><span class="p">(</span>
+    <span class="n">dotenv_path</span><span class="p">:</span> <span class="n">StrPath</span><span class="p">,</span>
+    <span class="n">key_to_set</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">value_to_set</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">quote_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;always&quot;</span><span class="p">,</span>
+    <span class="n">export</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds or Updates a key/value to the given .env</span>
+
+<span class="sd">    If the .env path given doesn&#39;t exist, fails instead of risking creating</span>
+<span class="sd">    an orphan .env somewhere in the filesystem</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">quote_mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;always&quot;</span><span class="p">,</span> <span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;never&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown quote_mode: </span><span class="si">{</span><span class="n">quote_mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">quote</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">quote_mode</span> <span class="o">==</span> <span class="s2">&quot;always&quot;</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="n">quote_mode</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">value_to_set</span><span class="o">.</span><span class="n">isalnum</span><span class="p">())</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">quote</span><span class="p">:</span>
+        <span class="n">value_out</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value_to_set</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&#39;&quot;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">value_out</span> <span class="o">=</span> <span class="n">value_to_set</span>
+    <span class="k">if</span> <span class="n">export</span><span class="p">:</span>
+        <span class="n">line_out</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;export </span><span class="si">{</span><span class="n">key_to_set</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">value_out</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">line_out</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key_to_set</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value_out</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+    <span class="k">with</span> <span class="n">rewrite</span><span class="p">(</span><span class="n">dotenv_path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+        <span class="n">replaced</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">missing_newline</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">mapping</span> <span class="ow">in</span> <span class="n">with_warn_for_invalid_lines</span><span class="p">(</span><span class="n">parse_stream</span><span class="p">(</span><span class="n">source</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">mapping</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">key_to_set</span><span class="p">:</span>
+                <span class="n">dest</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line_out</span><span class="p">)</span>
+                <span class="n">replaced</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dest</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mapping</span><span class="o">.</span><span class="n">original</span><span class="o">.</span><span class="n">string</span><span class="p">)</span>
+                <span class="n">missing_newline</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">mapping</span><span class="o">.</span><span class="n">original</span><span class="o">.</span><span class="n">string</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">replaced</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">missing_newline</span><span class="p">:</span>
+                <span class="n">dest</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">dest</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line_out</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">key_to_set</span><span class="p">,</span> <span class="n">value_to_set</span>
+
+
+<span class="k">def</span> <span class="nf">unset_key</span><span class="p">(</span>
+    <span class="n">dotenv_path</span><span class="p">:</span> <span class="n">StrPath</span><span class="p">,</span>
+    <span class="n">key_to_unset</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">quote_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;always&quot;</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Removes a given key from the given `.env` file.</span>
+
+<span class="sd">    If the .env path given doesn&#39;t exist, fails.</span>
+<span class="sd">    If the given key doesn&#39;t exist in the .env, fails.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dotenv_path</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Can&#39;t delete from </span><span class="si">%s</span><span class="s2"> - it doesn&#39;t exist.&quot;</span><span class="p">,</span> <span class="n">dotenv_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">key_to_unset</span>
+
+    <span class="n">removed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">with</span> <span class="n">rewrite</span><span class="p">(</span><span class="n">dotenv_path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">mapping</span> <span class="ow">in</span> <span class="n">with_warn_for_invalid_lines</span><span class="p">(</span><span class="n">parse_stream</span><span class="p">(</span><span class="n">source</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">mapping</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">key_to_unset</span><span class="p">:</span>
+                <span class="n">removed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dest</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mapping</span><span class="o">.</span><span class="n">original</span><span class="o">.</span><span class="n">string</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">removed</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Key </span><span class="si">%s</span><span class="s2"> not removed from </span><span class="si">%s</span><span class="s2"> - key doesn&#39;t exist.&quot;</span><span class="p">,</span> <span class="n">key_to_unset</span><span class="p">,</span> <span class="n">dotenv_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">key_to_unset</span>
+
+    <span class="k">return</span> <span class="n">removed</span><span class="p">,</span> <span class="n">key_to_unset</span>
+
+
+<span class="k">def</span> <span class="nf">resolve_variables</span><span class="p">(</span>
+    <span class="n">values</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]],</span>
+    <span class="n">override</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="n">new_values</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">atoms</span> <span class="o">=</span> <span class="n">parse_variables</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">env</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">override</span><span class="p">:</span>
+                <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+                <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_values</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_values</span><span class="p">)</span>
+                <span class="n">env</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">)</span>
+
+        <span class="n">new_values</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+
+    <span class="k">return</span> <span class="n">new_values</span>
+
+
+<span class="k">def</span> <span class="nf">_walk_to_root</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Yield directories starting from the given directory up to the root</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;Starting path not found&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="n">last_dir</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">last_dir</span> <span class="o">!=</span> <span class="n">current_dir</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">current_dir</span>
+        <span class="n">parent_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">pardir</span><span class="p">))</span>
+        <span class="n">last_dir</span><span class="p">,</span> <span class="n">current_dir</span> <span class="o">=</span> <span class="n">current_dir</span><span class="p">,</span> <span class="n">parent_dir</span>
+
+
+<span class="k">def</span> <span class="nf">find_dotenv</span><span class="p">(</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;.env&#39;</span><span class="p">,</span>
+    <span class="n">raise_error_if_not_found</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">usecwd</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Search in increasingly higher folders for the given file</span>
+
+<span class="sd">    Returns path to the file if found, or an empty string otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_is_interactive</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Decide whether this is running in a REPL or IPython notebook &quot;&quot;&quot;</span>
+        <span class="n">main</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;__main__&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fromlist</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;__file__&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">main</span><span class="p">,</span> <span class="s1">&#39;__file__&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">usecwd</span> <span class="ow">or</span> <span class="n">_is_interactive</span><span class="p">()</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s1">&#39;frozen&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># Should work without __file__, e.g. in REPL or IPython notebook.</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># will work for .py files</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span>
+        <span class="n">current_file</span> <span class="o">=</span> <span class="vm">__file__</span>
+
+        <span class="k">while</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_filename</span> <span class="o">==</span> <span class="n">current_file</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_back</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_back</span>
+        <span class="n">frame_filename</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_filename</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">frame_filename</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">dirname</span> <span class="ow">in</span> <span class="n">_walk_to_root</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">check_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">check_path</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">check_path</span>
+
+    <span class="k">if</span> <span class="n">raise_error_if_not_found</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;File not found&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+
+
+<div class="viewcode-block" id="load_dotenv"><a class="viewcode-back" href="../../config.html#config.settings.load_dotenv">[docs]</a><span class="k">def</span> <span class="nf">load_dotenv</span><span class="p">(</span>
+    <span class="n">dotenv_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StrPath</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">override</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">interpolate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a .env file and then load all the variables found as environment variables.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        dotenv_path: Absolute or relative path to .env file.</span>
+<span class="sd">        stream: Text stream (such as `io.StringIO`) with .env content, used if</span>
+<span class="sd">            `dotenv_path` is `None`.</span>
+<span class="sd">        verbose: Whether to output a warning the .env file is missing.</span>
+<span class="sd">        override: Whether to override the system environment variables with the variables</span>
+<span class="sd">            from the `.env` file.</span>
+<span class="sd">        encoding: Encoding to be used to read the file.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Bool: True if at least one environment variable is set else False</span>
+
+<span class="sd">    If both `dotenv_path` and `stream` are `None`, `find_dotenv()` is used to find the</span>
+<span class="sd">    .env file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">dotenv_path</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">stream</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dotenv_path</span> <span class="o">=</span> <span class="n">find_dotenv</span><span class="p">()</span>
+
+    <span class="n">dotenv</span> <span class="o">=</span> <span class="n">DotEnv</span><span class="p">(</span>
+        <span class="n">dotenv_path</span><span class="o">=</span><span class="n">dotenv_path</span><span class="p">,</span>
+        <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="n">interpolate</span><span class="o">=</span><span class="n">interpolate</span><span class="p">,</span>
+        <span class="n">override</span><span class="o">=</span><span class="n">override</span><span class="p">,</span>
+        <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">dotenv</span><span class="o">.</span><span class="n">set_as_environment_variables</span><span class="p">()</span></div>
+
+
+<span class="k">def</span> <span class="nf">dotenv_values</span><span class="p">(</span>
+    <span class="n">dotenv_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StrPath</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">stream</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IO</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">interpolate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse a .env file and return its content as a dict.</span>
+
+<span class="sd">    The returned dict will have `None` values for keys without values in the .env file.</span>
+<span class="sd">    For example, `foo=bar` results in `{&quot;foo&quot;: &quot;bar&quot;}` whereas `foo` alone results in</span>
+<span class="sd">    `{&quot;foo&quot;: None}`</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        dotenv_path: Absolute or relative path to the .env file.</span>
+<span class="sd">        stream: `StringIO` object with .env content, used if `dotenv_path` is `None`.</span>
+<span class="sd">        verbose: Whether to output a warning if the .env file is missing.</span>
+<span class="sd">        encoding: Encoding to be used to read the file.</span>
+
+<span class="sd">    If both `dotenv_path` and `stream` are `None`, `find_dotenv()` is used to find the</span>
+<span class="sd">    .env file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">dotenv_path</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">stream</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dotenv_path</span> <span class="o">=</span> <span class="n">find_dotenv</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">DotEnv</span><span class="p">(</span>
+        <span class="n">dotenv_path</span><span class="o">=</span><span class="n">dotenv_path</span><span class="p">,</span>
+        <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="n">interpolate</span><span class="o">=</span><span class="n">interpolate</span><span class="p">,</span>
+        <span class="n">override</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Cyril Pierro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

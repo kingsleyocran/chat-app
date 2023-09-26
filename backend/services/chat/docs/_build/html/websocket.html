@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>websocket &mdash; Chat App System (Chat Service) 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Controller package" href="websocket.controller.html" />
+    <link rel="prev" title="Chat Service" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Chat App System (Chat Service)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Chat Service</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">websocket</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="websocket.controller.html">Controller package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.migrations.html">Migrations package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.tests.html">Tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.tools.html">Tools package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.utils.html">Utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#main-modules">Main Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-websocket.admin">Admin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-websocket.apps">Apps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#websocket.apps.WebsocketConfig"><code class="docutils literal notranslate"><span class="pre">WebsocketConfig</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-websocket.models">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-websocket.routing">Routing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-websocket.urls">Urls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-websocket.views">Views</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#websocket.views.index"><code class="docutils literal notranslate"><span class="pre">index()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-websocket">End</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html">core package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.html">scripts</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Chat App System (Chat Service)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Chat Service</a></li>
+      <li class="breadcrumb-item active">websocket</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/websocket.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="websocket">
+<h1>websocket<a class="headerlink" href="#websocket" title="Permalink to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="websocket.controller.html">Controller package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="websocket.controller.html#module-websocket.controller.consumer">Consumer module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="websocket.controller.html#websocket.controller.consumer.chat_consumer_logger"><code class="docutils literal notranslate"><span class="pre">chat_consumer_logger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="websocket.controller.html#websocket.controller.consumer.AUTH_URL"><code class="docutils literal notranslate"><span class="pre">AUTH_URL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="websocket.controller.html#websocket.controller.consumer.ChatConsumer"><code class="docutils literal notranslate"><span class="pre">ChatConsumer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="websocket.controller.html#websocket.controller.consumer.ChatConsumer.chat_message"><code class="docutils literal notranslate"><span class="pre">ChatConsumer.chat_message()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.controller.html#websocket.controller.consumer.ChatConsumer.connect"><code class="docutils literal notranslate"><span class="pre">ChatConsumer.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.controller.html#websocket.controller.consumer.ChatConsumer.connection_established"><code class="docutils literal notranslate"><span class="pre">ChatConsumer.connection_established()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.controller.html#websocket.controller.consumer.ChatConsumer.disconnect"><code class="docutils literal notranslate"><span class="pre">ChatConsumer.disconnect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.controller.html#websocket.controller.consumer.ChatConsumer.get_room_name"><code class="docutils literal notranslate"><span class="pre">ChatConsumer.get_room_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.controller.html#websocket.controller.consumer.ChatConsumer.is_user_authenticated"><code class="docutils literal notranslate"><span class="pre">ChatConsumer.is_user_authenticated()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.controller.html#websocket.controller.consumer.ChatConsumer.receive"><code class="docutils literal notranslate"><span class="pre">ChatConsumer.receive()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="websocket.controller.html#module-websocket.controller">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="websocket.migrations.html">Migrations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="websocket.migrations.html#module-websocket.migrations">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="websocket.tests.html">Tests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="websocket.tests.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocket.tests.html#module-websocket.tests.conftest">Conftest module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="websocket.tests.html#websocket.tests.conftest.websocket_instance"><code class="docutils literal notranslate"><span class="pre">websocket_instance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="websocket.tests.html#module-websocket.tests.test_websocket">test_websocket module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="websocket.tests.html#websocket.tests.test_websocket.test_websocket_connect"><code class="docutils literal notranslate"><span class="pre">test_websocket_connect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="websocket.tests.html#websocket.tests.test_websocket.test_websocket_disconnect"><code class="docutils literal notranslate"><span class="pre">test_websocket_disconnect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="websocket.tests.html#websocket.tests.test_websocket.test_websocket_send_and_receive"><code class="docutils literal notranslate"><span class="pre">test_websocket_send_and_receive()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="websocket.tests.html#module-websocket.tests">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="websocket.tools.html">Tools package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="websocket.tools.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocket.tools.html#module-websocket.tools.log">Log module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="websocket.tools.html#websocket.tools.log.Log"><code class="docutils literal notranslate"><span class="pre">Log</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="websocket.tools.html#websocket.tools.log.Log.critical"><code class="docutils literal notranslate"><span class="pre">Log.critical()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.tools.html#websocket.tools.log.Log.debug"><code class="docutils literal notranslate"><span class="pre">Log.debug()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.tools.html#websocket.tools.log.Log.error"><code class="docutils literal notranslate"><span class="pre">Log.error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.tools.html#websocket.tools.log.Log.exception"><code class="docutils literal notranslate"><span class="pre">Log.exception()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.tools.html#websocket.tools.log.Log.info"><code class="docutils literal notranslate"><span class="pre">Log.info()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="websocket.tools.html#module-websocket.tools">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="websocket.utils.html">Utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="websocket.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="websocket.utils.html#module-websocket.utils.run">Run module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="websocket.utils.html#websocket.utils.run.async_return"><code class="docutils literal notranslate"><span class="pre">async_return()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="websocket.utils.html#module-websocket.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="main-modules">
+<h2>Main Modules<a class="headerlink" href="#main-modules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-websocket.admin">
+<span id="admin"></span><h2>Admin<a class="headerlink" href="#module-websocket.admin" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-websocket.apps">
+<span id="apps"></span><h2>Apps<a class="headerlink" href="#module-websocket.apps" title="Permalink to this heading"></a></h2>
+<p>Django Application App Config</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="websocket.apps.WebsocketConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">websocket.apps.</span></span><span class="sig-name descname"><span class="pre">WebsocketConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_module</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/websocket/apps.html#WebsocketConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#websocket.apps.WebsocketConfig" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AppConfig</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="websocket.apps.WebsocketConfig.default_auto_field">
+<span class="sig-name descname"><span class="pre">default_auto_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'django.db.models.BigAutoField'</span></em><a class="headerlink" href="#websocket.apps.WebsocketConfig.default_auto_field" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="websocket.apps.WebsocketConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'websocket'</span></em><a class="headerlink" href="#websocket.apps.WebsocketConfig.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-websocket.models">
+<span id="models"></span><h2>Models<a class="headerlink" href="#module-websocket.models" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-websocket.routing">
+<span id="routing"></span><h2>Routing<a class="headerlink" href="#module-websocket.routing" title="Permalink to this heading"></a></h2>
+<p>Routing for Websocket</p>
+<p>This module defines the routing definition</p>
+</section>
+<section id="module-websocket.urls">
+<span id="urls"></span><h2>Urls<a class="headerlink" href="#module-websocket.urls" title="Permalink to this heading"></a></h2>
+<p>URl module</p>
+<p>This module defines the url route for testing
+the websocket functionality</p>
+</section>
+<section id="module-websocket.views">
+<span id="views"></span><h2>Views<a class="headerlink" href="#module-websocket.views" title="Permalink to this heading"></a></h2>
+<p>Websocket View</p>
+<p>This module the endpoint view for websocket</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="websocket.views.index">
+<span class="sig-prename descclassname"><span class="pre">websocket.views.</span></span><span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">room_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/websocket/views.html#index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#websocket.views.index" title="Permalink to this definition"></a></dt>
+<dd><p>Index View</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>object</em>) – request</p></li>
+<li><p><strong>room_name</strong> (<em>str</em>) – room name to join</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Json response</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-websocket">
+<span id="end"></span><h2>End<a class="headerlink" href="#module-websocket" title="Permalink to this heading"></a></h2>
+<p>Websocket Package</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="Chat Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="websocket.controller.html" class="btn btn-neutral float-right" title="Controller package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Cyril Pierro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

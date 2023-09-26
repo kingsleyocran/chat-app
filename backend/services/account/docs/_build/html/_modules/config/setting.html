@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>config.setting &mdash; Chat App System (Account Service) 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Chat App System (Account Service)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Account Packages</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Chat App System (Account Service)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">config.setting</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for config.setting</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;General Application Settings</span>
+
+<span class="sd">This module stores all the configurations</span>
+<span class="sd">for the application</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pydantic</span>
+
+
+<div class="viewcode-block" id="AppSettings"><a class="viewcode-back" href="../../config.html#config.setting.AppSettings">[docs]</a><span class="k">class</span> <span class="nc">AppSettings</span><span class="p">(</span><span class="n">pydantic</span><span class="o">.</span><span class="n">BaseSettings</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Application Settings</span>
+<span class="sd">    Attributes:</span>
+<span class="sd">            DATABASE_URL (str) : Production database url</span>
+<span class="sd">            TEST_DATABASE_URL (str): Test database url</span>
+<span class="sd">            TESTING (bool): Test or Production environment</span>
+<span class="sd">            LOG_FILENAME (str): Log file name</span>
+<span class="sd">            API_PREFIX (str): API router prefix name</span>
+<span class="sd">            authjwt_secret_key (str): Secret key for access token</span>
+<span class="sd">            authjwt_access_token_expires (int): Expiration of the access token</span>
+<span class="sd">            authjwt_refresh_token_expires (int): Expiration of refresh token</span>
+<span class="sd">            authjwt_access_cookie_key (str): Secret key for cookie access token</span>
+<span class="sd">            authjwt_refresh_cookie_key (str): key for cookie refresh token</span>
+<span class="sd">            authjwt_denylist_enabled (bool): Allow deny list enabled</span>
+<span class="sd">            authjwt_denylist_token_checks (set): Tokens to check for deny list</span>
+<span class="sd">            REDIS_HOST (str): The host name of the redis</span>
+<span class="sd">            REDIS_PORT (int): The port number of the redis</span>
+<span class="sd">            APP_TITLE (str): Application title</span>
+<span class="sd">            APP_DESCRIPTION (str): Application description</span>
+<span class="sd">            BROKER_URL (str): Kafka broker to connect to</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DATABASE_URL</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">TEST_DATABASE_URL</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">TESTING</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">LOG_FILENAME</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">API_PREFIX</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;/api/v1&quot;</span>
+    <span class="n">authjwt_secret_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">authjwt_access_token_expires</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">authjwt_refresh_token_expires</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">authjwt_access_cookie_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">authjwt_refresh_cookie_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">authjwt_access_csrf_cookie_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">authjwt_refresh_csrf_cookie_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">authjwt_denylist_enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">authjwt_denylist_token_checks</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;access&quot;</span><span class="p">,</span> <span class="s2">&quot;refresh&quot;</span><span class="p">}</span>
+    <span class="n">REDIS_HOST</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">REDIS_PORT</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">APP_TITLE</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Chat Application&quot;</span>
+    <span class="n">APP_DESCRIPTION</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Management service for chat application&quot;</span>
+    <span class="n">BROKER_URL</span><span class="p">:</span> <span class="nb">str</span>
+
+<div class="viewcode-block" id="AppSettings.Config"><a class="viewcode-back" href="../../config.html#config.setting.AppSettings.Config">[docs]</a>    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Meta configuration&quot;&quot;&quot;</span>
+
+        <span class="n">env_file</span> <span class="o">=</span> <span class="s2">&quot;.env&quot;</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Cyril Pierro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

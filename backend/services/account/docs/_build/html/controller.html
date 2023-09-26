@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>controller package &mdash; Chat App System (Account Service) 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Chat App System (Account Service)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Account Packages</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Chat App System (Account Service)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">controller package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/controller.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="controller-package">
+<h1>controller package<a class="headerlink" href="#controller-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-controller.account">
+<span id="controller-account-module"></span><h2>controller.account module<a class="headerlink" href="#module-controller.account" title="Permalink to this heading"></a></h2>
+<p>Utility for perform user account operations</p>
+<p>This module demonstrates the various operations that a user
+of a system is allowed to person</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="controller.account.AccountOperations">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">controller.account.</span></span><span class="sig-name descname"><span class="pre">AccountOperations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/controller/account.html#AccountOperations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.account.AccountOperations" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="interfaces.html#interfaces.account.AccountOperationsInterface" title="interfaces.account.AccountOperationsInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">AccountOperationsInterface</span></code></a></p>
+<p>Account operations</p>
+<p>Contains the user operations or functions a user can perfom</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="controller.account.AccountOperations._db">
+<span class="sig-name descname"><span class="pre">_db</span></span><a class="headerlink" href="#controller.account.AccountOperations._db" title="Permalink to this definition"></a></dt>
+<dd><p>Database session
+For performing db operations on the database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.account.AccountOperations.create_account">
+<span class="sig-name descname"><span class="pre">create_account</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/controller/account.html#AccountOperations.create_account"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.account.AccountOperations.create_account" title="Permalink to this definition"></a></dt>
+<dd><p>Create an Account for a User
+:param user_id: Id of the User to create
+:type user_id: int
+:param the account for:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>OperationError</strong> – sql Error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.account.AccountOperations.get_account_with_user_id">
+<span class="sig-name descname"><span class="pre">get_account_with_user_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="models.html#models.account.UserAccount" title="models.account.UserAccount"><span class="pre">UserAccount</span></a></span></span><a class="reference internal" href="_modules/controller/account.html#AccountOperations.get_account_with_user_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.account.AccountOperations.get_account_with_user_id" title="Permalink to this definition"></a></dt>
+<dd><p>Get an Account with a specific user id
+:param user_id: Id of the User
+:type user_id: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="error.html#error.exceptions.AccountOperationsError" title="error.exceptions.AccountOperationsError"><strong>AccountOperationsError</strong></a> – raises an account operations error</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a user model instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.account.AccountOperations.is_user_account_active">
+<span class="sig-name descname"><span class="pre">is_user_account_active</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/controller/account.html#AccountOperations.is_user_account_active"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.account.AccountOperations.is_user_account_active" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if a User account is active
+:param user_id: Id of the user
+:type user_id: int</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.account.AccountOperations.set_account_as_active">
+<span class="sig-name descname"><span class="pre">set_account_as_active</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/controller/account.html#AccountOperations.set_account_as_active"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.account.AccountOperations.set_account_as_active" title="Permalink to this definition"></a></dt>
+<dd><p>Set User Account as Active in the system
+:param user_id: Id of the user
+:type user_id: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>OperationError</strong> – sql Error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.account.AccountOperations.set_account_as_inactive">
+<span class="sig-name descname"><span class="pre">set_account_as_inactive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/controller/account.html#AccountOperations.set_account_as_inactive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.account.AccountOperations.set_account_as_inactive" title="Permalink to this definition"></a></dt>
+<dd><p>Set User Account as Inactive in the system
+:param user_id: Id of the user
+:type user_id: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>OperationError</strong> – sql Error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.account.AccountOperations.set_account_profile_pic">
+<span class="sig-name descname"><span class="pre">set_account_profile_pic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_pic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/controller/account.html#AccountOperations.set_account_profile_pic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.account.AccountOperations.set_account_profile_pic" title="Permalink to this definition"></a></dt>
+<dd><p>Change the User Account profile picture in the system
+:param user_id: Id of the user
+:type user_id: int
+:param profile_pic: Profile picture image
+:type profile_pic: str
+:param string for the user:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>OperationError</strong> – sql Error</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-controller.auth">
+<span id="controller-auth-module"></span><h2>controller.auth module<a class="headerlink" href="#module-controller.auth" title="Permalink to this heading"></a></h2>
+<p>Authentication Service</p>
+<p>This module demonstrates how to authenticate a
+user in the system</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="controller.auth.settings">
+<span class="sig-prename descclassname"><span class="pre">controller.auth.</span></span><span class="sig-name descname"><span class="pre">settings</span></span><a class="headerlink" href="#controller.auth.settings" title="Permalink to this definition"></a></dt>
+<dd><p>Application settings
+Defines the fields for running
+the application</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-controller.users">
+<span id="controller-users-module"></span><h2>controller.users module<a class="headerlink" href="#module-controller.users" title="Permalink to this heading"></a></h2>
+<p>User operations utility</p>
+<p>This module contains the user allowed operations</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="controller.users.UserOperations">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">controller.users.</span></span><span class="sig-name descname"><span class="pre">UserOperations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/controller/users.html#UserOperations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.users.UserOperations" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="interfaces.html#interfaces.users.UserOperationsInterface" title="interfaces.users.UserOperationsInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserOperationsInterface</span></code></a></p>
+<p>User operations</p>
+<p>This class contains the various functions
+available to a user</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="controller.users.UserOperations._db">
+<span class="sig-name descname"><span class="pre">_db</span></span><a class="headerlink" href="#controller.users.UserOperations._db" title="Permalink to this definition"></a></dt>
+<dd><p>database session
+Session for database operations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.users.UserOperations.check_if_email_is_verified">
+<span class="sig-name descname"><span class="pre">check_if_email_is_verified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/controller/users.html#UserOperations.check_if_email_is_verified"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.users.UserOperations.check_if_email_is_verified" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the user email is verified
+:param id: id of the user of the system
+:type id: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>UserOperationError</strong> – Email not verified</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.users.UserOperations.get_user_by">
+<span class="sig-name descname"><span class="pre">get_user_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_or_username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="models.html#models.users.Users" title="models.users.Users"><span class="pre">Users</span></a></span></span><a class="reference internal" href="_modules/controller/users.html#UserOperations.get_user_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.users.UserOperations.get_user_by" title="Permalink to this definition"></a></dt>
+<dd><p>Get a user by either username or id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong> (<em>id_or_username</em>) – str :int): consist of the properties</p></li>
+<li><p><strong>provide</strong> (<em>a user suppose to</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>object</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>UserOperationError</strong> – raises Error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.users.UserOperations.get_username">
+<span class="sig-name descname"><span class="pre">get_username</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/controller/users.html#UserOperations.get_username"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.users.UserOperations.get_username" title="Permalink to this definition"></a></dt>
+<dd><p>Get the username of a user in the system
+:param id: id of the user of the system
+:type id: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.users.UserOperations.register_user">
+<span class="sig-name descname"><span class="pre">register_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="schemas.html#schemas.users.RegisterUser" title="schemas.users.RegisterUser"><span class="pre">RegisterUser</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="models.html#models.users.Users" title="models.users.Users"><span class="pre">Users</span></a></span></span><a class="reference internal" href="_modules/controller/users.html#UserOperations.register_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.users.UserOperations.register_user" title="Permalink to this definition"></a></dt>
+<dd><p>Register a new User in the system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<em>object</em>) – consist of the properties</p></li>
+<li><p><strong>provide</strong> (<em>a user suppose to</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.users.UserOperations.reset_user_email">
+<span class="sig-name descname"><span class="pre">reset_user_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/controller/users.html#UserOperations.reset_user_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.users.UserOperations.reset_user_email" title="Permalink to this definition"></a></dt>
+<dd><p>Change the email of a new User in the system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>int</em>) – id of the user of the system</p></li>
+<li><p><strong>email</strong> (<em>str</em>) – email to use</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.users.UserOperations.reset_user_password">
+<span class="sig-name descname"><span class="pre">reset_user_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/controller/users.html#UserOperations.reset_user_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.users.UserOperations.reset_user_password" title="Permalink to this definition"></a></dt>
+<dd><p>Change the password of a new User in the system
+:param user_id: id of the user of the system
+:type user_id: int
+:param password: password to use
+:type password: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.users.UserOperations.reset_user_username">
+<span class="sig-name descname"><span class="pre">reset_user_username</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/controller/users.html#UserOperations.reset_user_username"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.users.UserOperations.reset_user_username" title="Permalink to this definition"></a></dt>
+<dd><p>Change the username of a user in the system
+:param id: id of the user of the system
+:type id: int
+:param username:
+:type username: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.users.UserOperations.set_email_as_verified">
+<span class="sig-name descname"><span class="pre">set_email_as_verified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/controller/users.html#UserOperations.set_email_as_verified"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.users.UserOperations.set_email_as_verified" title="Permalink to this definition"></a></dt>
+<dd><p>Sets user email as verified
+:param id: id of the user of the system
+:type id: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="controller.users.UserOperations.verify_user">
+<span class="sig-name descname"><span class="pre">verify_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="schemas.html#schemas.account.Login" title="schemas.account.Login"><span class="pre">Login</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/controller/users.html#UserOperations.verify_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controller.users.UserOperations.verify_user" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a user exists in the system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<em>object</em>) – consist of the properties</p></li>
+<li><p><strong>login</strong> (<em>a user suppose to provide during</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-controller">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-controller" title="Permalink to this heading"></a></h2>
+<p>Controller Package</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Cyril Pierro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

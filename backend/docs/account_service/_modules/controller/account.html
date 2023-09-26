@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>controller.account &mdash; Chat App System (Account Service) 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Chat App System (Account Service)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Account Packages</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Chat App System (Account Service)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">controller.account</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for controller.account</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Utility for perform user account operations</span>
+
+<span class="sd">This module demonstrates the various operations that a user</span>
+<span class="sd">of a system is allowed to person</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">orm</span>
+
+<span class="kn">from</span> <span class="nn">error</span> <span class="kn">import</span> <span class="n">exceptions</span>
+<span class="kn">from</span> <span class="nn">interfaces</span> <span class="kn">import</span> <span class="n">account</span> <span class="k">as</span> <span class="n">acc_interface</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">account</span> <span class="k">as</span> <span class="n">acc_model</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">sql</span>
+
+
+<div class="viewcode-block" id="AccountOperations"><a class="viewcode-back" href="../../controller.html#controller.account.AccountOperations">[docs]</a><span class="k">class</span> <span class="nc">AccountOperations</span><span class="p">(</span><span class="n">acc_interface</span><span class="o">.</span><span class="n">AccountOperationsInterface</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Account operations</span>
+
+<span class="sd">    Contains the user operations or functions a user can perfom</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">            _db (object): Database session</span>
+<span class="sd">                For performing db operations on the database</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">orm</span><span class="o">.</span><span class="n">Session</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="n">db</span>
+
+<div class="viewcode-block" id="AccountOperations.create_account"><a class="viewcode-back" href="../../controller.html#controller.account.AccountOperations.create_account">[docs]</a>    <span class="nd">@sql</span><span class="o">.</span><span class="n">sql_error_handler</span>
+    <span class="k">def</span> <span class="nf">create_account</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an Account for a User</span>
+<span class="sd">        Args:</span>
+<span class="sd">            user_id (int):  Id of the User to create</span>
+<span class="sd">            the account for</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            OperationError: sql Error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_account</span> <span class="o">=</span> <span class="n">acc_model</span><span class="o">.</span><span class="n">UserAccount</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">sql</span><span class="o">.</span><span class="n">add_object_to_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span> <span class="n">new_account</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AccountOperations.get_account_with_user_id"><a class="viewcode-back" href="../../controller.html#controller.account.AccountOperations.get_account_with_user_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_account_with_user_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">acc_model</span><span class="o">.</span><span class="n">UserAccount</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get an Account with a specific user id</span>
+<span class="sd">        Args:</span>
+<span class="sd">            user_id(int): Id of the User</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AccountOperationsError: raises an account operations error</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            object: a user model instance</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_account</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">acc_model</span><span class="o">.</span><span class="n">UserAccount</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">acc_model</span><span class="o">.</span><span class="n">UserAccount</span><span class="o">.</span><span class="n">user_id</span> <span class="o">==</span> <span class="n">user_id</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">user_account</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">AccountOperationsError</span><span class="p">(</span>
+                <span class="s2">&quot;User Account not found&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">401</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">user_account</span></div>
+
+<div class="viewcode-block" id="AccountOperations.set_account_as_active"><a class="viewcode-back" href="../../controller.html#controller.account.AccountOperations.set_account_as_active">[docs]</a>    <span class="nd">@sql</span><span class="o">.</span><span class="n">sql_error_handler</span>
+    <span class="k">def</span> <span class="nf">set_account_as_active</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set User Account as Active in the system</span>
+<span class="sd">        Args:</span>
+<span class="sd">            user_id (int): Id of the user</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            OperationError: sql Error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_account_with_user_id</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">user_account</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">user_account</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">sql</span><span class="o">.</span><span class="n">add_object_to_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span> <span class="n">user_account</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AccountOperations.set_account_as_inactive"><a class="viewcode-back" href="../../controller.html#controller.account.AccountOperations.set_account_as_inactive">[docs]</a>    <span class="nd">@sql</span><span class="o">.</span><span class="n">sql_error_handler</span>
+    <span class="k">def</span> <span class="nf">set_account_as_inactive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set User Account as Inactive in the system</span>
+<span class="sd">        Args:</span>
+<span class="sd">            user_id (int): Id of the user</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            OperationError: sql Error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_account_with_user_id</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">user_account</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">user_account</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">sql</span><span class="o">.</span><span class="n">add_object_to_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span> <span class="n">user_account</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AccountOperations.set_account_profile_pic"><a class="viewcode-back" href="../../controller.html#controller.account.AccountOperations.set_account_profile_pic">[docs]</a>    <span class="nd">@sql</span><span class="o">.</span><span class="n">sql_error_handler</span>
+    <span class="k">def</span> <span class="nf">set_account_profile_pic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">profile_pic</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change the User Account profile picture in the system</span>
+<span class="sd">        Args:</span>
+<span class="sd">            user_id (int): Id of the user</span>
+<span class="sd">            profile_pic(str): Profile picture image</span>
+<span class="sd">            string for the user</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            OperationError: sql Error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_account_with_user_id</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">user_account</span><span class="o">.</span><span class="n">profile_pic</span> <span class="o">=</span> <span class="n">profile_pic</span>
+        <span class="n">sql</span><span class="o">.</span><span class="n">add_object_to_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span> <span class="n">user_account</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AccountOperations.is_user_account_active"><a class="viewcode-back" href="../../controller.html#controller.account.AccountOperations.is_user_account_active">[docs]</a>    <span class="k">def</span> <span class="nf">is_user_account_active</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if a User account is active</span>
+<span class="sd">        Args:</span>
+<span class="sd">            user_id (int): Id of the user</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_account</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_account_with_user_id</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">account_state</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">user_account</span><span class="o">.</span><span class="n">is_active</span>
+        <span class="k">return</span> <span class="n">account_state</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Cyril Pierro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

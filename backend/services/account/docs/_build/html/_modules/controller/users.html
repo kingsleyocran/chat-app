@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>controller.users &mdash; Chat App System (Account Service) 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Chat App System (Account Service)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Account Packages</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Chat App System (Account Service)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">controller.users</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for controller.users</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;User operations utility</span>
+
+<span class="sd">This module contains the user allowed operations</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">orm</span>
+
+<span class="kn">from</span> <span class="nn">error</span> <span class="kn">import</span> <span class="n">exceptions</span>
+<span class="kn">from</span> <span class="nn">interfaces.users</span> <span class="kn">import</span> <span class="n">UserOperationsInterface</span>
+<span class="kn">from</span> <span class="nn">models.users</span> <span class="kn">import</span> <span class="n">Users</span>
+<span class="kn">from</span> <span class="nn">schemas</span> <span class="kn">import</span> <span class="n">account</span><span class="p">,</span> <span class="n">users</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">sql</span>
+
+
+<div class="viewcode-block" id="UserOperations"><a class="viewcode-back" href="../../controller.html#controller.users.UserOperations">[docs]</a><span class="k">class</span> <span class="nc">UserOperations</span><span class="p">(</span><span class="n">UserOperationsInterface</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;User operations</span>
+
+<span class="sd">    This class contains the various functions</span>
+<span class="sd">    available to a user</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        _db (object): database session</span>
+<span class="sd">            Session for database operations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">orm</span><span class="o">.</span><span class="n">Session</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a User operation</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            db (object): database session</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="n">db</span>
+
+<div class="viewcode-block" id="UserOperations.register_user"><a class="viewcode-back" href="../../controller.html#controller.users.UserOperations.register_user">[docs]</a>    <span class="nd">@sql</span><span class="o">.</span><span class="n">sql_error_handler</span>
+    <span class="k">def</span> <span class="nf">register_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">users</span><span class="o">.</span><span class="n">RegisterUser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Users</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a new User in the system</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user (object): consist of the properties</span>
+<span class="sd">            a user suppose to provide</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hash_password</span> <span class="o">=</span> <span class="n">Users</span><span class="o">.</span><span class="n">generate_hash_password</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+
+        <span class="n">new_user</span> <span class="o">=</span> <span class="n">Users</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+            <span class="n">hash_password</span><span class="o">=</span><span class="n">hash_password</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">email</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">sql</span><span class="o">.</span><span class="n">add_object_to_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span> <span class="n">new_user</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_user</span></div>
+
+<div class="viewcode-block" id="UserOperations.verify_user"><a class="viewcode-back" href="../../controller.html#controller.users.UserOperations.verify_user">[docs]</a>    <span class="k">def</span> <span class="nf">verify_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">account</span><span class="o">.</span><span class="n">Login</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if a user exists in the system</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user (object): consist of the properties</span>
+<span class="sd">            a user suppose to provide during login</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user_by</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_if_email_is_verified</span><span class="p">(</span><span class="n">user_found</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+        <span class="n">verify_password</span> <span class="o">=</span> <span class="n">Users</span><span class="o">.</span><span class="n">verify_password</span><span class="p">(</span>
+            <span class="n">user_found</span><span class="o">.</span><span class="n">hash_password</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">password</span>  <span class="c1"># type: ignore</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">verify_password</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">UserOperationsError</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="s2">&quot;Invalid password&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">user_found</span><span class="o">.</span><span class="n">id</span></div>
+
+<div class="viewcode-block" id="UserOperations.get_user_by"><a class="viewcode-back" href="../../controller.html#controller.users.UserOperations.get_user_by">[docs]</a>    <span class="k">def</span> <span class="nf">get_user_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_or_username</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Users</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a user by either username or id</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            id_or_username (:str :int): consist of the properties</span>
+<span class="sd">            a user suppose to provide</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            object</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            UserOperationError: raises Error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">id_or_username</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">user_found</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Users</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Users</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">id_or_username</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+                <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">user_found</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Users</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Users</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">id_or_username</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+                <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">user_found</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">UserOperationsError</span><span class="p">(</span>
+                <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;User not found&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">404</span>  <span class="c1"># type: ignore</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">user_found</span></div>
+
+<div class="viewcode-block" id="UserOperations.reset_user_password"><a class="viewcode-back" href="../../controller.html#controller.users.UserOperations.reset_user_password">[docs]</a>    <span class="nd">@sql</span><span class="o">.</span><span class="n">sql_error_handler</span>
+    <span class="k">def</span> <span class="nf">reset_user_password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change the password of a new User in the system</span>
+<span class="sd">        Args:</span>
+<span class="sd">            user_id (int): id of the user of the system</span>
+<span class="sd">            password (str): password to use</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hash_password</span> <span class="o">=</span> <span class="n">Users</span><span class="o">.</span><span class="n">generate_hash_password</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+        <span class="n">user_found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user_by</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">user_found</span><span class="o">.</span><span class="n">hash_password</span> <span class="o">=</span> <span class="n">hash_password</span>
+        <span class="n">sql</span><span class="o">.</span><span class="n">add_object_to_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span> <span class="n">user_found</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UserOperations.reset_user_email"><a class="viewcode-back" href="../../controller.html#controller.users.UserOperations.reset_user_email">[docs]</a>    <span class="nd">@sql</span><span class="o">.</span><span class="n">sql_error_handler</span>
+    <span class="k">def</span> <span class="nf">reset_user_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">email</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change the email of a new User in the system</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            id (int): id of the user of the system</span>
+<span class="sd">            email (str): email to use</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user_by</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">user_found</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
+        <span class="n">sql</span><span class="o">.</span><span class="n">add_object_to_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span> <span class="n">user_found</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UserOperations.reset_user_username"><a class="viewcode-back" href="../../controller.html#controller.users.UserOperations.reset_user_username">[docs]</a>    <span class="nd">@sql</span><span class="o">.</span><span class="n">sql_error_handler</span>
+    <span class="k">def</span> <span class="nf">reset_user_username</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change the username of a user in the system</span>
+<span class="sd">        Args:</span>
+<span class="sd">            id (int): id of the user of the system</span>
+<span class="sd">            username (str):</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user_by</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">user_found</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+        <span class="n">sql</span><span class="o">.</span><span class="n">add_object_to_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span> <span class="n">user_found</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UserOperations.get_username"><a class="viewcode-back" href="../../controller.html#controller.users.UserOperations.get_username">[docs]</a>    <span class="nd">@sql</span><span class="o">.</span><span class="n">sql_error_handler</span>
+    <span class="k">def</span> <span class="nf">get_username</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the username of a user in the system</span>
+<span class="sd">        Args:</span>
+<span class="sd">            id (int): id of the user of the system</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user_by</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">user_found</span><span class="o">.</span><span class="n">username</span></div>
+
+<div class="viewcode-block" id="UserOperations.set_email_as_verified"><a class="viewcode-back" href="../../controller.html#controller.users.UserOperations.set_email_as_verified">[docs]</a>    <span class="nd">@sql</span><span class="o">.</span><span class="n">sql_error_handler</span>
+    <span class="k">def</span> <span class="nf">set_email_as_verified</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets user email as verified</span>
+<span class="sd">        Args:</span>
+<span class="sd">            id (int): id of the user of the system</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user_by</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">user_found</span><span class="o">.</span><span class="n">is_email_verified</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">sql</span><span class="o">.</span><span class="n">add_object_to_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span> <span class="n">user_found</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UserOperations.check_if_email_is_verified"><a class="viewcode-back" href="../../controller.html#controller.users.UserOperations.check_if_email_is_verified">[docs]</a>    <span class="k">def</span> <span class="nf">check_if_email_is_verified</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if the user email is verified</span>
+<span class="sd">        Args:</span>
+<span class="sd">            id (int): id of the user of the system</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            UserOperationError: Email not verified</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user_found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user_by</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user_found</span><span class="o">.</span><span class="n">is_email_verified</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">UserOperationsError</span><span class="p">(</span>
+                <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;Email not verified&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">400</span>
+            <span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Cyril Pierro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+version: '3.8'
+
+services:
+  account:
+    image: kingsleyocran/chat_app_account:f21bc96
+    container_name: chat-app-account
+    networks:
+      - default
+    ports:
+      - 8081:8081
+    environment:
+      - TESTING=${TESTING}
+      - TEST_DATABASE_URL=sqlite:///./testing.db
+      - DATABASE_URL=postgresql://admin:admin@postgres:5432/chat_app_database
+      - LOG_FILENAME=${LOG_FILENAME}
+      - authjwt_secret_key=${authjwt_secret_key}
+      - authjwt_access_token_expires=20
+      - authjwt_refresh_token_expires=1440
+      - authjwt_access_cookie_key='youraccesscookiekey'
+      - authjwt_refresh_cookie_key='yourrefreshcookiekey'
+      - authjwt_access_csrf_cookie_key='youraccesscsrfcookiekey'
+      - authjwt_refresh_csrf_cookie_key='yourrefreshcsrfcookiekey'
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=""
+      - BROKER_URL=kafka:9092
+      - ADMIN_USERNAME="admin"
+      - ADMIN_PASSWORD="admin"
+      - ADMIN_EMAIL="admin@admin.com"
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=Host(`account.${PRIMARY_DOMAIN}`)"
+      - "traefik.http.services.account.loadbalancer.server.port=8081"
+      - "traefik.http.services.account.loadbalancer.server.scheme=http"
+      # - "traefik.http.routers.account.tls=true"
+      # - "traefik.http.routers.account.tls.certresolver=letsencrypt"
+      # - "traefik.http.routers.account.entrypoints=websecure"
+      # - "traefik.http.middlewares.account.redirectscheme.scheme=https"
+      # - "traefik.http.middlewares.account.redirectscheme.permanent=true"
+      # - "traefik.http.middlewares.account.redirectscheme.port=443"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      kafka:
+        condition: service_started
+
+  chat:
+    image: kingsleyocran/chat_app:f507881
+    container_name: chat-app-chat
+    networks:
+      - default
+    ports:
+      - 8083:8083
+    environment:
+      - TESTING=${TESTING}
+      - LOGFILE_NAME=${LOG_FILENAME}
+      - AUTH_MANAGEMENT_URL=http://account:8081
+      - SUPPORT_URL=http://support:8084
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - ELASTICSEARCH_HOST=elasticsearch
+      - ELASTICSEARCH_PORT=9200
+      - JAEGER_HOST=jaeger
+      - JAEGER_PORT=6831
+      - SECRET_KEY="yourdjangosecretkey"
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chat.rule=Host(`chat.${PRIMARY_DOMAIN}`)"
+      - "traefik.http.services.chat.loadbalancer.server.port=8083"
+      - "traefik.http.services.chat.loadbalancer.server.scheme=http"
+      # - "traefik.http.routers.chat.tls=true"
+      # - "traefik.http.routers.chat.tls.certresolver=letsencrypt"
+      # - "traefik.http.routers.chat.entrypoints=websecure"
+      # - "traefik.http.middlewares.chat.redirectscheme.scheme=https"
+      # - "traefik.http.middlewares.chat.redirectscheme.permanent=true"
+      # - "traefik.http.middlewares.chat.redirectscheme.port=443"
+
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      account:
+        condition: service_started
+      jaeger:
+        condition: service_started
+      redis:
+        condition: service_started
+      support:
+        condition: service_started
+
+  notification:
+    image: kingsleyocran/chat_app_notification:8a9033f
+    container_name: chat-app-notification
+    networks:
+      - default
+    ports:
+      - 8082:8082
+    environment:
+      - BROKER_URL=kafka:9092
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_URL=redis://redis:6379/0
+      - STMP_SERVER=${STMP_SERVER}
+      - EMAIL_PORT=${STMP_PORT}
+      - EMAIL_SENDER=${STMP_EMAIL}
+      - EMAIL_PASSWORD=${STMP_PASSWORD}
+      - ACCOUNT_SERVICE_URL=http://account:8081
+      - GRAFANA_ADMIN_USER="admin"
+      - GRAFANA_ADMIN_PASSWORD="admin"
+      - GRAFANA_SERVER_URL=http://grafana:3000
+      - MYSQL_USERNAME=""
+      - MYSQL_PASSWORD=""
+      - MYSQL_HOST=""
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web.rule=Host(`notification.${PRIMARY_DOMAIN}`)"
+      # - "traefik.http.routers.notification.tls=true"
+      # - "traefik.http.routers.notification.tls.certresolver=letsencrypt"
+      # - "traefik.http.routers.notification.entrypoints=websecure"
+      # - "traefik.http.middlewares.notification.redirectscheme.scheme=https"
+      # - "traefik.http.middlewares.notification.redirectscheme.permanent=true"
+      # - "traefik.http.middlewares.notification.redirectscheme.port=443"
+
+    depends_on:
+      account:
+        condition: service_started
+      kafka:
+        condition: service_started
+      redis:
+        condition: service_started
+      grafana:
+        condition: service_started
+
+  support:
+    image: kingsleyocran/chat_app_support:bc6cf01
+    container_name: chat-app-support
+    restart: always
+    ports:
+      - 8084:8084
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.support.rule=Host(`support.${PRIMARY_DOMAIN}`)"
+      - "traefik.http.services.support.loadbalancer.server.port=8000"
+      - "traefik.http.services.support.loadbalancer.server.scheme=http"
+      # - "traefik.http.routers.support.tls=true"
+      # - "traefik.http.routers.support.tls.certresolver=letsencrypt"
+      # - "traefik.http.routers.support.entrypoints=websecure"
+      # - "traefik.http.middlewares.support.redirectscheme.scheme=https"
+      # - "traefik.http.middlewares.support.redirectscheme.permanent=true"
+      # - "traefik.http.middlewares.support.redirectscheme.port=443"
+
+    networks:
+      - default
+
+  traefik:
+    image: traefik:latest
+    container_name: "traefik"
+    command:
+      - "--providers.docker"
+      - --api
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      # - "--certificatesresolvers.letsencrypt.acme.email=${SSL_EMAIL}"
+      # - "--certificatesresolvers.letsencrypt.acme.storage=/etc/traefik/acme/acme.json"
+      # - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      # - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      # - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      # - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+
+    networks:
+      - default
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    volumes:
+      - /etc/traefik:/etc/traefik
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "/var/DOCKER/DATA/food_hub/letsencrypt/acme.json:/etc/traefik/acme/acme.json"
+
+networks:
+  default:
+    name: chat-app-network
+    external: true

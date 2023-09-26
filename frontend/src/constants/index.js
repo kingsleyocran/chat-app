@@ -1,0 +1,10 @@
+const API_PREFIX = "/api/v1/";
+export const REGISTER_ROUTE = API_PREFIX + "register";
+export const LOGIN_ROUTE = API_PREFIX + "login";
+export const LOGOUT_ROUTE = API_PREFIX + "logout";
+export const USERNAME_ROUTE = API_PREFIX + "username";
+export const REFRESH_ROUTE = API_PREFIX + "refresh";
+export const ACCESS_TOKEN = "chat_app_access_token";
+export const REFRESH_TOKEN = "chat_app_refresh_token";
+export const SEARCH_USER_ROUTE = "/search/user/";
+export const GET_ALL_USERS = "/search/users/";

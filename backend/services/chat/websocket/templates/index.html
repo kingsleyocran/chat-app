@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+</head>
+<body>
+    <div>
+        <h1>Lets chat </h1>
+
+        <form id="form">
+            <input type="text" name="message"></input>
+        </form>
+    </div>
+
+    <div id="messages"></div>
+
+    <script type="text/javascript">
+        const path = window.location.pathname
+        let username = ""
+        let use_path = `${path.split("chat")[1]}/`;
+        const tokenPath = window.location.href.split("?")
+        if (tokenPath.length === 2){
+            use_path += "?" + tokenPath[1]
+        }
+
+        console.log(`/ws/chat${use_path}`);
+        const chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat${use_path}`)
+        chatSocket.onmessage = function(e){
+            const data = JSON.parse(e.data)
+            console.log(`ws://${window.location.host}/ws/chat${use_path}`);
+            console.log(data);
+            if (data.type === 'chat_message' && data.command.length > 1){
+                const message = document.getElementById("messages")
+
+                return data.message.map((msg)=> {
+
+                        message.insertAdjacentHTML('beforeend', `<div> <p>${msg.from_author} - ${msg.to_author} -> ${msg.messages}</p></div>`)
+                    })
+
+            }
+            if (data.type === 'chat_bot_message'){
+                const message = document.getElementById("messages")
+                message.insertAdjacentHTML('beforeend', `<div> <p>${data.user} - ${data.message} </p></div>`)
+            }
+
+            if (data.type == "start"){
+                username = data.username
+            }
+        }
+
+
+
+  const form = document.getElementById("form")
+  form.addEventListener('submit', (e)=>{
+
+      e.preventDefault()
+      const message = e.target.message.value;
+      chatSocket.send(JSON.stringify({
+          "messages": message,
+          "from_author": "nana",
+          "to_author": "kofi",
+          "command": "new_message"
+      }))
+      form.reset()
+  })
+
+
+    </script>
+</body>
+
+</html>

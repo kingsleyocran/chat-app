@@ -1,0 +1,227 @@
+name: Chat Application Workflow
+run-name: ${{ github.actor }} is running Workflow
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  get_services_modified:
+    if: github.event.pull_request.merged == true || ${{ github.event_name }} == 'push'
+    name: Get all Chat App Services Modified
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.services.outputs.changes }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - uses: dorny/paths-filter@v2
+        id: services
+        with:
+          filters: |
+            account:
+              - 'backend/services/account/**'
+            chat:
+              - 'backend/services/chat/**'
+            notification:
+              - 'backend/services/notification/**'
+            support:
+              - 'backend/services/support/**'
+  run_linters:
+    name: Run Linters on Code
+    runs-on: ubuntu-latest
+    needs: get_services_modified
+    if: ${{ needs.get_services_modified.outputs.services != '[]' && needs.get_services_modified.outputs.services != '' }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Lint Code
+        uses: github/super-linter/slim@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_PYTHON_PYLINT: false
+          VALIDATE_PYTHON_ISORT: false
+          VALIDATE_MARKDOWN: false
+          VALIDATE_JSCPD: false
+          VALIDATE_NATURAL_LANGUAGE: false
+          KUBERNETES_KUBEVAL_OPTIONS: "--ignore-missing-schemas --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master"
+
+  test_services_modified:
+    name: Test all Chat App Services Modified
+    needs:
+      - run_linters
+      - get_services_modified
+
+    if: ${{ needs.get_services_modified.outputs.services != '[]' && needs.get_services_modified.outputs.services != '' }}
+    runs-on: ubuntu-latest
+    env:
+      # You can use github secrets for values
+      TESTING: True
+      TEST_DATABASE_URL: "sqlite:///./testing.db"
+      DATABASE_URL: "sqlite:///./production.db"
+      LOG_FILENAME: "chat_application.log"
+      authjwt_secret_key: "test_secret_key"
+      authjwt_access_token_expires: 3
+      authjwt_refresh_token_expires: 5
+      authjwt_access_cookie_key: "test_cookie_access_key"
+      authjwt_refresh_cookie_key: "test_cookie_refresh_refresh"
+      authjwt_access_csrf_cookie_key: "test_access_csrf_cookie_key"
+      authjwt_refresh_csrf_cookie_key: "test_refresh_csrf_cookie_key"
+      REDIS_HOST: "localhost"
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ""
+      BROKER_URL: "0.0.0.0:9092"
+      ADMIN_USERNAME: "test_admin"
+      ADMIN_PASSWORD: "test_admin_password"
+      ADMIN_EMAIL: "test_admin@test_email.com"
+      AUTH_MANAGEMENT_URL: "http://account_service_url"
+      SUPPORT_URL: "http://support_service_url"
+      ELASTICSEARCH_HOST: "localhost"
+      ELASTICSEARCH_PORT: 9000
+      JAEGER_HOST: "localhost"
+      JAEGER_PORT: 6831
+      SECRET_KEY: "django_secret_key"
+      CELERY_BROKER_URL: ""
+      CELERY_RESULT_URL: ""
+      STMP_SERVER: ""
+      EMAIL_PORT: ""
+      EMAIL_SENDER: ""
+      EMAIL_PASSWORD: ""
+      ACCOUNT_SERVICE_URL: ""
+      MYSQL_USERNAME: ""
+      MYSQL_PASSWORD: ""
+      MYSQL_HOST: ""
+      GRAFANA_ADMIN_USER: ""
+      GRAFANA_ADMIN_PASSWORD: ""
+      GRAFANA_SERVER_URL: ""
+      DJANGO_SETTINGS_MODULE: core.settings
+    strategy:
+      # Don't fail all jobs if a single job fails
+      fail-fast: false
+
+      matrix:
+        services: ${{ fromJson(needs.get_services_modified.outputs.services) }}
+
+    defaults:
+      run:
+        working-directory: backend/services/${{ matrix.services }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9.*"
+
+      - name: Install Project dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          sudo apt-get install redis -y
+          pip install pytest; pip install pytest-cov
+          poetry config virtualenvs.create false
+          poetry install --no-interaction --no-ansi
+
+      - name: Run Django migrations
+        if: ${{ matrix.services == 'chat' }}
+        run: |
+          python manage.py makemigrations
+          python manage.py migrate
+
+      - name: Run tests for Services
+        run: |
+          pytest -vv
+
+  vulnerabilty_scan_project:
+    name: Security Scan for project
+    needs:
+      - run_linters
+      - get_services_modified
+      - test_services_modified
+
+    if: ${{ needs.get_services_modified.outputs.services != '[]' && needs.get_services_modified.outputs.services != '' }}
+    runs-on: ubuntu-latest
+    strategy:
+      # Don't fail all jobs if a single job fails
+      fail-fast: false
+
+      matrix:
+        services: ${{ fromJson(needs.get_services_modified.outputs.services) }}
+
+    defaults:
+      run:
+        working-directory: backend/services/${{ matrix.services }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Install scanning tools
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b .
+          sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install trivy
+
+      - name: Run Scan
+        run: |
+          ./syft packages . -o spdx-json > bom.json
+          cat bom.json
+          trivy sbom --exit-code 1 -s CRITICAL bom.json
+
+  deploy_services_modified:
+    name: Deploy Services Modified
+    needs:
+      - get_services_modified
+      - test_services_modified
+      - vulnerabilty_scan_project
+
+    if: ${{ needs.get_services_modified.outputs.services != '[]' && needs.get_services_modified.outputs.services != '' }}
+    runs-on: ubuntu-latest
+    strategy:
+      # Don't fail all jobs if a single job fails
+      fail-fast: false
+      matrix:
+        services: ${{ fromJson(needs.get_services_modified.outputs.services) }}
+
+    defaults:
+      run:
+        working-directory: backend/services/${{ matrix.services }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Docker Image tag
+        id: tag
+        run: echo image_tag="$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: backend/services/${{ matrix.services }}/.
+          file: backend/services/${{ matrix.services }}/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/chat_app_${{ matrix.services }}:${{ steps.tag.outputs.image_tag }}
+          secrets: |
+            GIT_AUTH_TOKEN=${{ secrets.DOCKER_HUB_TOKEN }}

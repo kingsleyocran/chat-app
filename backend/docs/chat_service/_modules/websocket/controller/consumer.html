@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>websocket.controller.consumer &mdash; Chat App System (Chat Service) 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Chat App System (Chat Service)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Chat Service</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Chat App System (Chat Service)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>websocket.controller.consumer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for websocket.controller.consumer</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Consumer </span>
+
+<span class="sd">This module is demonstrates how the operations</span>
+<span class="sd">for connecting, accepting, sending and receiving</span>
+<span class="sd">websocket operations</span>
+
+<span class="sd">Attributes:</span>
+<span class="sd">    chat_consumer_logger (object): Logger</span>
+<span class="sd">    AUTH_URL (str): Account service url</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">parse_qs</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">channels.generic.websocket</span> <span class="kn">import</span> <span class="n">AsyncWebsocketConsumer</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">websocket.tools.log</span> <span class="kn">import</span> <span class="n">Log</span>
+
+<span class="n">chat_consumer_logger</span> <span class="o">=</span> <span class="n">Log</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="n">AUTH_URL</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">AUTH_MANAGEMENT_URL</span>
+
+
+<div class="viewcode-block" id="ChatConsumer"><a class="viewcode-back" href="../../../websocket.controller.html#websocket.controller.consumer.ChatConsumer">[docs]</a><span class="k">class</span> <span class="nc">ChatConsumer</span><span class="p">(</span><span class="n">AsyncWebsocketConsumer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Chat Consumer Process</span>
+
+<span class="sd">    This class is responsible for performing</span>
+<span class="sd">    connect, accept, sending and receiving</span>
+<span class="sd">    messages or websocket. It also authenticates</span>
+<span class="sd">    a user who wants to connect.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_room_group_name</span> <span class="o">=</span> <span class="s2">&quot;default_group&quot;</span>
+    <span class="n">_room_name</span> <span class="o">=</span> <span class="s2">&quot;default_name&quot;</span>
+
+<div class="viewcode-block" id="ChatConsumer.connect"><a class="viewcode-back" href="../../../websocket.controller.html#websocket.controller.consumer.ChatConsumer.connect">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Connect</span>
+
+<span class="sd">        This method is responsible for allowing</span>
+<span class="sd">        connections to the websocket</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_user_authenticated</span><span class="p">():</span>
+            <span class="c1"># accept the connection</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+            <span class="c1"># extract the chat room name from route</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_room_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_room_name</span><span class="p">()</span>
+            <span class="c1"># create a group name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_room_group_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;chat_app_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_room_name</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="c1"># add a channel layer to add a group name</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_layer</span><span class="o">.</span><span class="n">group_add</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_room_group_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_name</span>  <span class="c1"># type: ignore</span>
+            <span class="p">)</span>
+
+            <span class="c1"># send a message to the group when they are connected</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_layer</span><span class="o">.</span><span class="n">group_send</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_room_group_name</span><span class="p">,</span>
+                <span class="c1"># message to send to group</span>
+                <span class="p">{</span>
+                    <span class="c1"># function name to send message</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;connection_established&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;You are now connected&quot;</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ChatConsumer.connection_established"><a class="viewcode-back" href="../../../websocket.controller.html#websocket.controller.consumer.ChatConsumer.connection_established">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">connection_established</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Connection established</span>
+
+<span class="sd">        This connection is responsible for </span>
+<span class="sd">        sending a success message when you are</span>
+<span class="sd">        authenticated to the system</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (object): event raised by the socket</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+            <span class="n">text_data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
+                    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)),</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ChatConsumer.chat_message"><a class="viewcode-back" href="../../../websocket.controller.html#websocket.controller.consumer.ChatConsumer.chat_message">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">chat_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Chat Message</span>
+
+<span class="sd">        This method is responsible for </span>
+<span class="sd">        sending message to a group channel</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (object): event raised by the socket</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+            <span class="n">text_data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;chat_message&quot;</span><span class="p">,</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">user</span><span class="p">}</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ChatConsumer.receive"><a class="viewcode-back" href="../../../websocket.controller.html#websocket.controller.consumer.ChatConsumer.receive">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text_data</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Receive</span>
+
+<span class="sd">        This method is responsible for </span>
+<span class="sd">        receiving messages from a group channel</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text_data (str): data sent through the channel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text_data_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text_data</span><span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">text_data_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">text_data_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_layer</span><span class="o">.</span><span class="n">group_send</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_room_group_name</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;chat_message&quot;</span><span class="p">,</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">user</span><span class="p">},</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ChatConsumer.disconnect"><a class="viewcode-back" href="../../../websocket.controller.html#websocket.controller.consumer.ChatConsumer.disconnect">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">close_code</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Disconnect from websocket</span>
+
+<span class="sd">        This method is responsible for disconnecting</span>
+<span class="sd">        a user from a socket</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            close_code</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AttributeError</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># discard a group name</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_layer</span><span class="o">.</span><span class="n">group_discard</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_room_group_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_name</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">chat_consumer_logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="ChatConsumer.is_user_authenticated"><a class="viewcode-back" href="../../../websocket.controller.html#websocket.controller.consumer.ChatConsumer.is_user_authenticated">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">is_user_authenticated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;User is authenticated</span>
+
+<span class="sd">        This method is responsible for </span>
+<span class="sd">        authenticating a user before joining</span>
+<span class="sd">        a channel</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True is successful, False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">[</span><span class="s2">&quot;query_string&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">query_string</span><span class="p">)</span>
+        <span class="n">token_key</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;token&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">token_key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">AUTH_URL</span><span class="si">}</span><span class="s2">/api/v1/username&quot;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ChatConsumer.get_room_name"><a class="viewcode-back" href="../../../websocket.controller.html#websocket.controller.consumer.ChatConsumer.get_room_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_room_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the room name </span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: the room name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">route</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url_route&quot;</span><span class="p">)</span>
+        <span class="n">keywords</span> <span class="o">=</span> <span class="n">route</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;kwargs&quot;</span><span class="p">)</span>
+        <span class="n">room_name</span> <span class="o">=</span> <span class="n">keywords</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;room_name&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">room_name</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Cyril Pierro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Packages &mdash; Chat App System (Account Service) 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Config" href="config.html" />
+    <link rel="prev" title="Welcome to Chat App System (Account Service)’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Chat App System (Account Service)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Account Packages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html">Core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interfaces.html">Interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schemas.html">Schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.html">Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html">Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handlers.html">Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="error.html">Errors</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Chat App System (Account Service)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Account Packages</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="account-packages">
+<h1>Account Packages<a class="headerlink" href="#account-packages" title="Permalink to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Config</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#module-config.setting">Setting Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="config.html#config.setting.AppSettings"><code class="docutils literal notranslate"><span class="pre">AppSettings</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.TEST_DATABASE_URL"><code class="docutils literal notranslate"><span class="pre">AppSettings.TEST_DATABASE_URL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.TESTING"><code class="docutils literal notranslate"><span class="pre">AppSettings.TESTING</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.LOG_FILENAME"><code class="docutils literal notranslate"><span class="pre">AppSettings.LOG_FILENAME</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.API_PREFIX"><code class="docutils literal notranslate"><span class="pre">AppSettings.API_PREFIX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.authjwt_secret_key"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_secret_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.authjwt_access_token_expires"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_access_token_expires</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.authjwt_refresh_token_expires"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_refresh_token_expires</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.authjwt_access_cookie_key"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_access_cookie_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.authjwt_refresh_cookie_key"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_refresh_cookie_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.authjwt_denylist_enabled"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_denylist_enabled</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.authjwt_denylist_token_checks"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_denylist_token_checks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.REDIS_HOST"><code class="docutils literal notranslate"><span class="pre">AppSettings.REDIS_HOST</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.REDIS_PORT"><code class="docutils literal notranslate"><span class="pre">AppSettings.REDIS_PORT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.APP_TITLE"><code class="docutils literal notranslate"><span class="pre">AppSettings.APP_TITLE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.APP_DESCRIPTION"><code class="docutils literal notranslate"><span class="pre">AppSettings.APP_DESCRIPTION</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.BROKER_URL"><code class="docutils literal notranslate"><span class="pre">AppSettings.BROKER_URL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id0"><code class="docutils literal notranslate"><span class="pre">AppSettings.API_PREFIX</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id1"><code class="docutils literal notranslate"><span class="pre">AppSettings.APP_DESCRIPTION</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id2"><code class="docutils literal notranslate"><span class="pre">AppSettings.APP_TITLE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id3"><code class="docutils literal notranslate"><span class="pre">AppSettings.BROKER_URL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.Config"><code class="docutils literal notranslate"><span class="pre">AppSettings.Config</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="config.html#config.setting.AppSettings.Config.env_file"><code class="docutils literal notranslate"><span class="pre">AppSettings.Config.env_file</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.DATABASE_URL"><code class="docutils literal notranslate"><span class="pre">AppSettings.DATABASE_URL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id4"><code class="docutils literal notranslate"><span class="pre">AppSettings.LOG_FILENAME</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id5"><code class="docutils literal notranslate"><span class="pre">AppSettings.REDIS_HOST</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id6"><code class="docutils literal notranslate"><span class="pre">AppSettings.REDIS_PORT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id7"><code class="docutils literal notranslate"><span class="pre">AppSettings.TESTING</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id8"><code class="docutils literal notranslate"><span class="pre">AppSettings.TEST_DATABASE_URL</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id9"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_access_cookie_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.authjwt_access_csrf_cookie_key"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_access_csrf_cookie_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id10"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_access_token_expires</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id11"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_denylist_enabled</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id12"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_denylist_token_checks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id13"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_refresh_cookie_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#config.setting.AppSettings.authjwt_refresh_csrf_cookie_key"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_refresh_csrf_cookie_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id14"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_refresh_token_expires</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="config.html#id15"><code class="docutils literal notranslate"><span class="pre">AppSettings.authjwt_secret_key</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#module-config">Contents End</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-core.build">Build</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#core.build.settings"><code class="docutils literal notranslate"><span class="pre">settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#core.build.AppBuilder"><code class="docutils literal notranslate"><span class="pre">AppBuilder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.build.AppBuilder._app"><code class="docutils literal notranslate"><span class="pre">AppBuilder._app</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.build.AppBuilder.add_app_details"><code class="docutils literal notranslate"><span class="pre">AppBuilder.add_app_details()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.build.AppBuilder.build_app"><code class="docutils literal notranslate"><span class="pre">AppBuilder.build_app()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.build.AppBuilder.register_database"><code class="docutils literal notranslate"><span class="pre">AppBuilder.register_database()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.build.AppBuilder.register_exceptions"><code class="docutils literal notranslate"><span class="pre">AppBuilder.register_exceptions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.build.AppBuilder.register_middlewares"><code class="docutils literal notranslate"><span class="pre">AppBuilder.register_middlewares()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.build.AppBuilder.register_routes"><code class="docutils literal notranslate"><span class="pre">AppBuilder.register_routes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#core.build.AppSingleton"><code class="docutils literal notranslate"><span class="pre">AppSingleton</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.build.AppSingleton.get_app_instance"><code class="docutils literal notranslate"><span class="pre">AppSingleton.get_app_instance()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-core.setup">Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#core.setup.settings"><code class="docutils literal notranslate"><span class="pre">settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#core.setup.DatabaseSetup"><code class="docutils literal notranslate"><span class="pre">DatabaseSetup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.setup.DatabaseSetup.get_base"><code class="docutils literal notranslate"><span class="pre">DatabaseSetup.get_base</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.setup.DatabaseSetup.get_engine"><code class="docutils literal notranslate"><span class="pre">DatabaseSetup.get_engine</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.setup.DatabaseSetup.get_session"><code class="docutils literal notranslate"><span class="pre">DatabaseSetup.get_session()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-core.start">Start</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#core.start.AppFactory"><code class="docutils literal notranslate"><span class="pre">AppFactory</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.start.AppFactory.initialize_app"><code class="docutils literal notranslate"><span class="pre">AppFactory.initialize_app()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-core">Contents End</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interfaces.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interfaces.html#module-interfaces.account">Account Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="interfaces.html#interfaces.account.AccountOperationsInterface"><code class="docutils literal notranslate"><span class="pre">AccountOperationsInterface</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="interfaces.html#interfaces.account.AccountOperationsInterface.create_account"><code class="docutils literal notranslate"><span class="pre">AccountOperationsInterface.create_account()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="interfaces.html#module-interfaces.builder">Builder Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="interfaces.html#interfaces.builder.AppBuilderInterface"><code class="docutils literal notranslate"><span class="pre">AppBuilderInterface</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="interfaces.html#interfaces.builder.AppBuilderInterface.register_database"><code class="docutils literal notranslate"><span class="pre">AppBuilderInterface.register_database()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="interfaces.html#interfaces.builder.AppBuilderInterface.register_exceptions"><code class="docutils literal notranslate"><span class="pre">AppBuilderInterface.register_exceptions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="interfaces.html#interfaces.builder.AppBuilderInterface.register_middlewares"><code class="docutils literal notranslate"><span class="pre">AppBuilderInterface.register_middlewares()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="interfaces.html#interfaces.builder.AppBuilderInterface.register_routes"><code class="docutils literal notranslate"><span class="pre">AppBuilderInterface.register_routes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="interfaces.html#module-interfaces.factory">Factory Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="interfaces.html#interfaces.factory.AppFactoryInterface"><code class="docutils literal notranslate"><span class="pre">AppFactoryInterface</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="interfaces.html#interfaces.factory.AppFactoryInterface.initialize_app"><code class="docutils literal notranslate"><span class="pre">AppFactoryInterface.initialize_app()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="interfaces.html#module-interfaces.users">Users Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="interfaces.html#interfaces.users.UserOperationsInterface"><code class="docutils literal notranslate"><span class="pre">UserOperationsInterface</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="interfaces.html#interfaces.users.UserOperationsInterface.register_user"><code class="docutils literal notranslate"><span class="pre">UserOperationsInterface.register_user()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="interfaces.html#interfaces.users.UserOperationsInterface.verify_user"><code class="docutils literal notranslate"><span class="pre">UserOperationsInterface.verify_user()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="interfaces.html#module-interfaces">Contents End</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="models.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#module-models.account">Account Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.account.UserAccount"><code class="docutils literal notranslate"><span class="pre">UserAccount</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.account.UserAccount.created_at"><code class="docutils literal notranslate"><span class="pre">UserAccount.created_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.account.UserAccount.id"><code class="docutils literal notranslate"><span class="pre">UserAccount.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.account.UserAccount.is_active"><code class="docutils literal notranslate"><span class="pre">UserAccount.is_active</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.account.UserAccount.profile_pic"><code class="docutils literal notranslate"><span class="pre">UserAccount.profile_pic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.account.UserAccount.updated_at"><code class="docutils literal notranslate"><span class="pre">UserAccount.updated_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.account.UserAccount.user"><code class="docutils literal notranslate"><span class="pre">UserAccount.user</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.account.UserAccount.user_id"><code class="docutils literal notranslate"><span class="pre">UserAccount.user_id</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#module-models.users">Users Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="models.html#models.users.Users"><code class="docutils literal notranslate"><span class="pre">Users</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.users.Users.email"><code class="docutils literal notranslate"><span class="pre">Users.email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.users.Users.generate_hash_password"><code class="docutils literal notranslate"><span class="pre">Users.generate_hash_password()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.users.Users.hash_password"><code class="docutils literal notranslate"><span class="pre">Users.hash_password</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.users.Users.id"><code class="docutils literal notranslate"><span class="pre">Users.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.users.Users.is_a_star"><code class="docutils literal notranslate"><span class="pre">Users.is_a_star</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.users.Users.is_admin"><code class="docutils literal notranslate"><span class="pre">Users.is_admin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.users.Users.is_email_verified"><code class="docutils literal notranslate"><span class="pre">Users.is_email_verified</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.users.Users.joined_at"><code class="docutils literal notranslate"><span class="pre">Users.joined_at</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.users.Users.username"><code class="docutils literal notranslate"><span class="pre">Users.username</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="models.html#models.users.Users.verify_password"><code class="docutils literal notranslate"><span class="pre">Users.verify_password()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#module-models">Contents End</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#module-plugins.producer">Producer Plugin</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="plugins.html#plugins.producer.app_settings"><code class="docutils literal notranslate"><span class="pre">app_settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugins.html#plugins.producer.consumer_logger"><code class="docutils literal notranslate"><span class="pre">consumer_logger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugins.html#plugins.producer.Producer"><code class="docutils literal notranslate"><span class="pre">Producer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="plugins.html#plugins.producer.Producer.send_message"><code class="docutils literal notranslate"><span class="pre">Producer.send_message()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="plugins.html#plugins.producer.Producer._message"><code class="docutils literal notranslate"><span class="pre">Producer._message</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#module-plugins.redis">Redis Plugin</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="plugins.html#plugins.redis.settings"><code class="docutils literal notranslate"><span class="pre">settings</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugins.html#plugins.redis.DenyListStorage"><code class="docutils literal notranslate"><span class="pre">DenyListStorage</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="plugins.html#plugins.redis.DenyListStorage._redis_server"><code class="docutils literal notranslate"><span class="pre">DenyListStorage._redis_server</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="plugins.html#plugins.redis.DenyListStorage.get_value"><code class="docutils literal notranslate"><span class="pre">DenyListStorage.get_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="plugins.html#plugins.redis.DenyListStorage.set_value"><code class="docutils literal notranslate"><span class="pre">DenyListStorage.set_value()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#module-plugins">Contents End</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="schemas.html">Schemas</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="schemas.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schemas.html#module-schemas.account">Account Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#schemas.account.CreateAccount"><code class="docutils literal notranslate"><span class="pre">CreateAccount</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.account.CreateAccount.username"><code class="docutils literal notranslate"><span class="pre">CreateAccount.username</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.account.CreateAccount.profile_pic"><code class="docutils literal notranslate"><span class="pre">CreateAccount.profile_pic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.account.CreateAccount.Config"><code class="docutils literal notranslate"><span class="pre">CreateAccount.Config</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="schemas.html#schemas.account.CreateAccount.Config.orm_mode"><code class="docutils literal notranslate"><span class="pre">CreateAccount.Config.orm_mode</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.account.CreateAccount.email"><code class="docutils literal notranslate"><span class="pre">CreateAccount.email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#id0"><code class="docutils literal notranslate"><span class="pre">CreateAccount.profile_pic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#id1"><code class="docutils literal notranslate"><span class="pre">CreateAccount.username</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#schemas.account.Login"><code class="docutils literal notranslate"><span class="pre">Login</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.account.Login.password"><code class="docutils literal notranslate"><span class="pre">Login.password</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.account.Login.Config"><code class="docutils literal notranslate"><span class="pre">Login.Config</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="schemas.html#schemas.account.Login.Config.orm_mode"><code class="docutils literal notranslate"><span class="pre">Login.Config.orm_mode</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#id2"><code class="docutils literal notranslate"><span class="pre">Login.password</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.account.Login.username"><code class="docutils literal notranslate"><span class="pre">Login.username</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#schemas.account.LoginOut"><code class="docutils literal notranslate"><span class="pre">LoginOut</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.account.LoginOut.refresh_token"><code class="docutils literal notranslate"><span class="pre">LoginOut.refresh_token</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.account.LoginOut.access_token"><code class="docutils literal notranslate"><span class="pre">LoginOut.access_token</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#id3"><code class="docutils literal notranslate"><span class="pre">LoginOut.refresh_token</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="schemas.html#module-schemas.error">Error Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#schemas.error.InvalidRefreshToken"><code class="docutils literal notranslate"><span class="pre">InvalidRefreshToken</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.error.InvalidRefreshToken.error"><code class="docutils literal notranslate"><span class="pre">InvalidRefreshToken.error</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#schemas.error.UnAuthorizedError"><code class="docutils literal notranslate"><span class="pre">UnAuthorizedError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.error.UnAuthorizedError.error"><code class="docutils literal notranslate"><span class="pre">UnAuthorizedError.error</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#schemas.error.UserNotFound"><code class="docutils literal notranslate"><span class="pre">UserNotFound</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.error.UserNotFound.error"><code class="docutils literal notranslate"><span class="pre">UserNotFound.error</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="schemas.html#module-schemas.users">Users Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#schemas.users.ChangeEmail"><code class="docutils literal notranslate"><span class="pre">ChangeEmail</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.users.ChangeEmail.email"><code class="docutils literal notranslate"><span class="pre">ChangeEmail.email</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#schemas.users.ChangeOut"><code class="docutils literal notranslate"><span class="pre">ChangeOut</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.users.ChangeOut.message"><code class="docutils literal notranslate"><span class="pre">ChangeOut.message</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#id4"><code class="docutils literal notranslate"><span class="pre">ChangeOut.message</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#schemas.users.ChangePassword"><code class="docutils literal notranslate"><span class="pre">ChangePassword</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.users.ChangePassword.password"><code class="docutils literal notranslate"><span class="pre">ChangePassword.password</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#schemas.users.ChangeUsername"><code class="docutils literal notranslate"><span class="pre">ChangeUsername</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.users.ChangeUsername.username"><code class="docutils literal notranslate"><span class="pre">ChangeUsername.username</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#schemas.users.RegisterUser"><code class="docutils literal notranslate"><span class="pre">RegisterUser</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.users.RegisterUser.username"><code class="docutils literal notranslate"><span class="pre">RegisterUser.username</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.users.RegisterUser.password"><code class="docutils literal notranslate"><span class="pre">RegisterUser.password</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.users.RegisterUser.Config"><code class="docutils literal notranslate"><span class="pre">RegisterUser.Config</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="schemas.html#schemas.users.RegisterUser.Config.orm_mode"><code class="docutils literal notranslate"><span class="pre">RegisterUser.Config.orm_mode</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.users.RegisterUser.email"><code class="docutils literal notranslate"><span class="pre">RegisterUser.email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#id5"><code class="docutils literal notranslate"><span class="pre">RegisterUser.password</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#id6"><code class="docutils literal notranslate"><span class="pre">RegisterUser.username</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="schemas.html#schemas.users.User"><code class="docutils literal notranslate"><span class="pre">User</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.users.User.username"><code class="docutils literal notranslate"><span class="pre">User.username</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.users.User.Config"><code class="docutils literal notranslate"><span class="pre">User.Config</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="schemas.html#schemas.users.User.Config.orm_mode"><code class="docutils literal notranslate"><span class="pre">User.Config.orm_mode</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#schemas.users.User.email"><code class="docutils literal notranslate"><span class="pre">User.email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="schemas.html#id7"><code class="docutils literal notranslate"><span class="pre">User.username</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="schemas.html#module-schemas">Contents End</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">Scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scripts.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.html#module-scripts.runner">Runner Script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scripts.html#scripts.runner.cli"><code class="docutils literal notranslate"><span class="pre">cli</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.html#module-scripts">Contents End</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.functional.html">tests.functional package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.functional.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.functional.html#module-tests.functional.test_user_process">tests.functional.test_user_process module</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="tests.functional.html#tests.functional.test_user_process.test_user_workflow_process"><code class="docutils literal notranslate"><span class="pre">test_user_workflow_process()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="tests.functional.html#module-tests.functional">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.unit.html">tests.unit package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.unit.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="tests.unit.operations.html">tests.unit.operations package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="tests.unit.operations.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="tests.unit.operations.html#module-tests.unit.operations.test_account_operations">tests.unit.operations.test_account_operations module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="tests.unit.operations.html#module-tests.unit.operations.test_users_operations">tests.unit.operations.test_users_operations module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="tests.unit.operations.html#module-tests.unit.operations">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="tests.unit.routes.html">tests.unit.routes package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="tests.unit.routes.html#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="tests.unit.routes.html#module-tests.unit.routes.test_route_account">tests.unit.routes.test_route_account module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="tests.unit.routes.html#module-tests.unit.routes.test_route_users">tests.unit.routes.test_route_users module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="tests.unit.routes.html#module-tests.unit.routes">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="tests.unit.html#module-tests.unit">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#module-tests.conftest">tests.conftest module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests.conftest.SQLALCHEMY_DATABASE_URL"><code class="docutils literal notranslate"><span class="pre">SQLALCHEMY_DATABASE_URL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests.conftest.engine"><code class="docutils literal notranslate"><span class="pre">engine</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests.conftest.SessionTesting"><code class="docutils literal notranslate"><span class="pre">SessionTesting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests.conftest.account_operations"><code class="docutils literal notranslate"><span class="pre">account_operations()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests.conftest.already_created_account"><code class="docutils literal notranslate"><span class="pre">already_created_account()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests.conftest.already_logged_in_response"><code class="docutils literal notranslate"><span class="pre">already_logged_in_response()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests.conftest.already_registered_user"><code class="docutils literal notranslate"><span class="pre">already_registered_user()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests.conftest.app"><code class="docutils literal notranslate"><span class="pre">app()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests.conftest.client"><code class="docutils literal notranslate"><span class="pre">client()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests.conftest.db_session"><code class="docutils literal notranslate"><span class="pre">db_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests.conftest.start_application"><code class="docutils literal notranslate"><span class="pre">start_application()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests.conftest.user_operations"><code class="docutils literal notranslate"><span class="pre">user_operations()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#module-tests.test_data">tests.test_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#module-tests">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#module-tools.log">Log tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tools.html#tools.log.Log"><code class="docutils literal notranslate"><span class="pre">Log</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tools.html#tools.log.Log.critical"><code class="docutils literal notranslate"><span class="pre">Log.critical()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tools.html#tools.log.Log.error"><code class="docutils literal notranslate"><span class="pre">Log.error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="tools.html#tools.log.Log.exception"><code class="docutils literal notranslate"><span class="pre">Log.exception()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#module-tools">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#module-utils.session">Session utility</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.session.create"><code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#module-utils.sql">Sql utility</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.sql.add_object_to_database"><code class="docutils literal notranslate"><span class="pre">add_object_to_database()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#utils.sql.sql_error_handler"><code class="docutils literal notranslate"><span class="pre">sql_error_handler()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#module-utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="handlers.html">Handlers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="handlers.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handlers.html#module-handlers.exceptions">Exceptions Handler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handlers.html#handlers.exceptions.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="handlers.html#handlers.exceptions.AppExceptionHandler"><code class="docutils literal notranslate"><span class="pre">AppExceptionHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handlers.html#handlers.exceptions.AppExceptionHandler.authjwt_exception_handler"><code class="docutils literal notranslate"><span class="pre">AppExceptionHandler.authjwt_exception_handler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handlers.html#handlers.exceptions.AppExceptionHandler.operations"><code class="docutils literal notranslate"><span class="pre">AppExceptionHandler.operations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="handlers.html#handlers.exceptions.AppExceptionHandler.server_operation"><code class="docutils literal notranslate"><span class="pre">AppExceptionHandler.server_operation()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="handlers.html#module-handlers">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="error.html">Errors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="error.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="error.html#module-error.exceptions">Exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="error.html#error.exceptions.AccountOperationsError"><code class="docutils literal notranslate"><span class="pre">AccountOperationsError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="error.html#error.exceptions.BaseException"><code class="docutils literal notranslate"><span class="pre">BaseException</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="error.html#error.exceptions.BaseException.msg"><code class="docutils literal notranslate"><span class="pre">BaseException.msg</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="error.html#error.exceptions.BaseException.status_code"><code class="docutils literal notranslate"><span class="pre">BaseException.status_code</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="error.html#error.exceptions.ServerError"><code class="docutils literal notranslate"><span class="pre">ServerError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="error.html#error.exceptions.UserOperationsError"><code class="docutils literal notranslate"><span class="pre">UserOperationsError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="error.html#module-error">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Chat App System (Account Service)’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="config.html" class="btn btn-neutral float-right" title="Config" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Cyril Pierro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

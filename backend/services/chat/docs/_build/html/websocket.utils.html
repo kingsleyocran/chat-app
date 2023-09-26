@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Utils package &mdash; Chat App System (Chat Service) 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="core package" href="core.html" />
+    <link rel="prev" title="Tools package" href="websocket.tools.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Chat App System (Chat Service)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Chat Service</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="websocket.html">websocket</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="websocket.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="websocket.controller.html">Controller package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.migrations.html">Migrations package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.tests.html">Tests package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="websocket.tools.html">Tools package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="websocket.html#main-modules">Main Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="websocket.html#module-websocket.admin">Admin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="websocket.html#module-websocket.apps">Apps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="websocket.html#module-websocket.models">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="websocket.html#module-websocket.routing">Routing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="websocket.html#module-websocket.urls">Urls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="websocket.html#module-websocket.views">Views</a></li>
+<li class="toctree-l3"><a class="reference internal" href="websocket.html#module-websocket">End</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html">core package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.html">scripts</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Chat App System (Chat Service)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Chat Service</a></li>
+          <li class="breadcrumb-item"><a href="websocket.html">websocket</a></li>
+      <li class="breadcrumb-item active">Utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/websocket.utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="utils-package">
+<h1>Utils package<a class="headerlink" href="#utils-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-websocket.utils.run">
+<span id="run-module"></span><h2>Run module<a class="headerlink" href="#module-websocket.utils.run" title="Permalink to this heading"></a></h2>
+<p>Run utility</p>
+<p>This module execute a process in async mode</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="websocket.utils.run.async_return">
+<span class="sig-prename descclassname"><span class="pre">websocket.utils.run.</span></span><span class="sig-name descname"><span class="pre">async_return</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/websocket/utils/run.html#async_return"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#websocket.utils.run.async_return" title="Permalink to this definition"></a></dt>
+<dd><p>Run result in async mode
+:param result: variable to run in async mode
+:type result: object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>async variable</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-websocket.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-websocket.utils" title="Permalink to this heading"></a></h2>
+<p>Utility Package</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="websocket.tools.html" class="btn btn-neutral float-left" title="Tools package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="core.html" class="btn btn-neutral float-right" title="core package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Cyril Pierro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

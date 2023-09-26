@@ -1,0 +1,229 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 3,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "account_service_requests_total{path != \"/metrics\", path='/docs'}",
+          "interval": "",
+          "legendFormat": "Docs",
+          "queryType": "randomWalk",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "account_service_requests_total{path != \"/metrics\", path='/api/v1/login'}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Login",
+          "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "account_service_requests_total{path != \"/metrics\", path='/api/v1/register'}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Register",
+          "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "account_service_requests_total{path != \"/metrics\", path='/api/v1/change/email'}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Change Email",
+          "refId": "D"
+        },
+        {
+          "exemplar": true,
+          "expr": "account_service_requests_total{path != \"/metrics\", path='/api/v1/change/username'}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Change Username",
+          "refId": "E"
+        },
+        {
+          "exemplar": true,
+          "expr": "account_service_requests_total{path != \"/metrics\", path='/api/v1/logout'}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Logout",
+          "refId": "F"
+        },
+        {
+          "exemplar": true,
+          "expr": "account_service_requests_total{path != \"/metrics\", path='/api/v1/refresh'}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "G"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Request on Account Service",
+      "type": "gauge"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "7.5.6",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "number_of_active_users_total",
+          "interval": "",
+          "legendFormat": "Active Users",
+          "queryType": "randomWalk",
+          "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "new_admin_users_registered_total",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Admin Registered",
+          "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "new_user_messages_sent_total",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Email messages Sent",
+          "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "rate(process_cpu_seconds_total{job=\"chat-application-account\"}[1m])",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Account Service CPU",
+          "refId": "D"
+        },
+        {
+          "exemplar": true,
+          "expr": "rate(process_cpu_seconds_total{job=\"chat-application-notification\"}[1m])",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Notification Service CPU",
+          "refId": "E"
+        }
+      ],
+      "title": "System Operations",
+      "type": "gauge"
+    }
+  ],
+  "schemaVersion": 27,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Chat App Monitoring",
+  "uid": "O9eZh2y4z",
+  "version": 4
+}

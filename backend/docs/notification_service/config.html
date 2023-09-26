@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>config package &mdash; Chat Application (Notification Version) 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="controller package" href="controller.html" />
+    <link rel="prev" title="core package" href="core.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Chat Application (Notification Version)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Notification Service</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="interfaces.html">interfaces package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html">core package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">config package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-config.settings">config.settings module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#config.settings.load_dotenv"><code class="docutils literal notranslate"><span class="pre">load_dotenv</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#config.settings.CONFIG_INI"><code class="docutils literal notranslate"><span class="pre">CONFIG_INI</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#config.settings.celery_name"><code class="docutils literal notranslate"><span class="pre">celery_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#config.settings.email_name"><code class="docutils literal notranslate"><span class="pre">email_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#config.settings.kafka_name"><code class="docutils literal notranslate"><span class="pre">kafka_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#config.settings.Parser"><code class="docutils literal notranslate"><span class="pre">Parser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#config.settings.Settings"><code class="docutils literal notranslate"><span class="pre">Settings</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-config">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="controller.html">controller package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html">plugins package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tools.html">tools package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripts.html">scripts package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Chat Application (Notification Version)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Notification Service</a></li>
+      <li class="breadcrumb-item active">config package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/config.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="config-package">
+<h1>config package<a class="headerlink" href="#config-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-config.settings">
+<span id="config-settings-module"></span><h2>config.settings module<a class="headerlink" href="#module-config.settings" title="Permalink to this heading"></a></h2>
+<p>General Configuration Settings</p>
+<p>This module demonstrates the necessary configurations
+required to run process in this configuration</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.load_dotenv">
+<span class="sig-prename descclassname"><span class="pre">config.settings.</span></span><span class="sig-name descname"><span class="pre">load_dotenv</span></span><a class="reference internal" href="_modules/dotenv/main.html#load_dotenv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#config.settings.load_dotenv" title="Permalink to this definition"></a></dt>
+<dd><p>Loads all environment variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.CONFIG_INI">
+<span class="sig-prename descclassname"><span class="pre">config.settings.</span></span><span class="sig-name descname"><span class="pre">CONFIG_INI</span></span><a class="headerlink" href="#config.settings.CONFIG_INI" title="Permalink to this definition"></a></dt>
+<dd><p>name of the ini file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.celery_name">
+<span class="sig-prename descclassname"><span class="pre">config.settings.</span></span><span class="sig-name descname"><span class="pre">celery_name</span></span><a class="headerlink" href="#config.settings.celery_name" title="Permalink to this definition"></a></dt>
+<dd><p>name of the celery config directive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.email_name">
+<span class="sig-prename descclassname"><span class="pre">config.settings.</span></span><span class="sig-name descname"><span class="pre">email_name</span></span><a class="headerlink" href="#config.settings.email_name" title="Permalink to this definition"></a></dt>
+<dd><p>name of the email config directive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.kafka_name">
+<span class="sig-prename descclassname"><span class="pre">config.settings.</span></span><span class="sig-name descname"><span class="pre">kafka_name</span></span><a class="headerlink" href="#config.settings.kafka_name" title="Permalink to this definition"></a></dt>
+<dd><p>name of the kafka config directive</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="config.settings.Parser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">config.settings.</span></span><span class="sig-name descname"><span class="pre">Parser</span></span><a class="reference internal" href="_modules/config/settings.html#Parser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#config.settings.Parser" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="interfaces.html#interfaces.parser.ParserInterface" title="interfaces.parser.ParserInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParserInterface</span></code></a></p>
+<p>Converts config ini configuration to
+values
+.. attribute:: _cfg</p>
+<blockquote>
+<div><p>ConfigParser instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="config.settings.Parser.get">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/config/settings.html#Parser.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#config.settings.Parser.get" title="Permalink to this definition"></a></dt>
+<dd><p>Get the value for the configuration
+:param directive: the ini config header
+:type directive: str
+:param key: the ini config header key
+:type key: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the ini config header key value</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="config.settings.Settings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">config.settings.</span></span><span class="sig-name descname"><span class="pre">Settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">broker_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Kafka_Broker_url:9092'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config/settings.html#Settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#config.settings.Settings" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Application Settings
+This class contains the general configurations
+used in this project</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.Settings.app_name">
+<span class="sig-name descname"><span class="pre">app_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Notification_service'</span></em><a class="headerlink" href="#config.settings.Settings.app_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.Settings.auth_service_url">
+<span class="sig-name descname"><span class="pre">auth_service_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'http://localhost:8000'</span></em><a class="headerlink" href="#config.settings.Settings.auth_service_url" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.Settings.broker_url">
+<span class="sig-name descname"><span class="pre">broker_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Kafka_Broker_url:9092'</span></em><a class="headerlink" href="#config.settings.Settings.broker_url" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.Settings.celery_broker_url">
+<span class="sig-name descname"><span class="pre">celery_broker_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'redis://redis_host_url:6379'</span></em><a class="headerlink" href="#config.settings.Settings.celery_broker_url" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.Settings.celery_result_backend">
+<span class="sig-name descname"><span class="pre">celery_result_backend</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'redis://redis_host_url:6379'</span></em><a class="headerlink" href="#config.settings.Settings.celery_result_backend" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.Settings.consumer_group_id">
+<span class="sig-name descname"><span class="pre">consumer_group_id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'my_users'</span></em><a class="headerlink" href="#config.settings.Settings.consumer_group_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.Settings.email_password">
+<span class="sig-name descname"><span class="pre">email_password</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'your_password'</span></em><a class="headerlink" href="#config.settings.Settings.email_password" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.Settings.email_port">
+<span class="sig-name descname"><span class="pre">email_port</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'your_mail_port'</span></em><a class="headerlink" href="#config.settings.Settings.email_port" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.Settings.log_file_name">
+<span class="sig-name descname"><span class="pre">log_file_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'notification_log.log'</span></em><a class="headerlink" href="#config.settings.Settings.log_file_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.Settings.sender_email">
+<span class="sig-name descname"><span class="pre">sender_email</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'your_sender_email&#64;gmail.com'</span></em><a class="headerlink" href="#config.settings.Settings.sender_email" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.Settings.stmp_server">
+<span class="sig-name descname"><span class="pre">stmp_server</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'your</span> <span class="pre">mail</span> <span class="pre">sername'</span></em><a class="headerlink" href="#config.settings.Settings.stmp_server" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="config.settings.Settings.topic_to_listen_on">
+<span class="sig-name descname"><span class="pre">topic_to_listen_on</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'new_users'</span></em><a class="headerlink" href="#config.settings.Settings.topic_to_listen_on" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-config">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-config" title="Permalink to this heading"></a></h2>
+<p>Config Package</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="core.html" class="btn btn-neutral float-left" title="core package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="controller.html" class="btn btn-neutral float-right" title="controller package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Cyril Pierro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
