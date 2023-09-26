@@ -15,7 +15,7 @@ Welcome to the backend part of the Chat App project. This section provides an ov
   - [Starting the Application](#starting-the-application)
     - [Troubleshooting](#troubleshooting)
 
-![Backend Workflow](https://github.com/kingsleyocran/chat-app/blob/main/resources/backend_workflow.jpg)
+![Backend Workflow](https://github.com/kingsleyocran/chat-app/blob/development/resources/backend_workflow.jpg)
 
 ## Dependencies
 
@@ -35,13 +35,13 @@ The `streams` directory includes Kafka Stream connectors and KSQL stream queries
 
 ## Tech Stacks
 
-![Tech Stack](https://github.com/kingsleyocran/chat-app/blob/main/resources/resources.jpg)
+![Tech Stack](https://github.com/kingsleyocran/chat-app/blob/development/resources/resources.jpg)
 
 ## Admin Panel Sample
 
 Here's a sample screenshot of the admin panel, providing an overview of the application's functionality:
 
-![Admin Panel](https://github.com/kingsleyocran/chat-app/blob/main/resources/admin_panel.png)
+![Admin Panel](https://github.com/kingsleyocran/chat-app/blob/development/resources/admin_panel.png)
 
 ## Starting the Application
 

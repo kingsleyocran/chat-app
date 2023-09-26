@@ -6,25 +6,25 @@ Welcome to the Chat App System, an all-encompassing application that combines ba
 
 As a systems engineer, you can explore the intricate details of the system's infrastructure. Here's a high-level overview of the design:
 
-![Infrastructure Design](https://github.com/kingsleyocran/chat-app/blob/main/resources/workflow.png)
+![Infrastructure Design](https://github.com/kingsleyocran/chat-app/blob/development/resources/workflow.png)
 
 ## Business Process Model for Business Analysts
 
 For business analysts, we've provided a comprehensive business process model, outlining the key processes and interactions within the Chat App System:
 
-![Business Process Model](https://github.com/kingsleyocran/chat-app/blob/main/resources/BPMN.jpg)
+![Business Process Model](https://github.com/kingsleyocran/chat-app/blob/development/resources/BPMN.jpg)
 
 ## Web Chat Frontend
 
 The Chat App System boasts an interactive and user-friendly web chat frontend, allowing users to seamlessly communicate. Take a sneak peek at the frontend interface:
 
-![Web Chat Frontend](https://github.com/kingsleyocran/chat-app/blob/main/resources/frontend_view.png)
+![Web Chat Frontend](https://github.com/kingsleyocran/chat-app/blob/development/resources/frontend_view.png)
 
 ## Backend Admin Panel
 
 Explore the powerful backend admin panel, offering robust control and insights into the system's operations:
 
-![Backend Admin Panel](https://github.com/kingsleyocran/chat-app/blob/main/resources/admin_panel.png)
+![Backend Admin Panel](https://github.com/kingsleyocran/chat-app/blob/development/resources/admin_panel.png)
 
 ## Portfolio
 
